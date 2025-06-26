@@ -27,7 +27,7 @@ export function LoginForm() {
       let detectedRole: "admin" | "client" = "client"
 
       // Admin credentials detection
-      if (email === "admin@digitroncx.com" || email.includes("admin")) {
+      if (email === "Milhan@digitroncx.com" || email.includes("admin")) {
         detectedRole = "admin"
       }
 
@@ -65,12 +65,12 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label className="text-white" htmlFor="email">Email</Label>
+        <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       </div>
 
       <div className="space-y-2">
-        <Label className="text-white" htmlFor="password">Password</Label>
+        <Label htmlFor="password">Password</Label>
         <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </div>
 

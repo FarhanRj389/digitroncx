@@ -194,10 +194,10 @@ export function DashboardOverview() {
           <p className="text-gray-600 mt-1">Welcome back! Here's what's happening with your partnerships.</p>
         </div>
         <div className="flex space-x-3">
-          <Button variant="outline" onClick={handleViewReports}>
+          <Button variant="outline" onClick={handleViewReports} className="text-black">
             <Activity className="h-4 w-4 mr-2" />
             View Reports
-          </Button>
+          </Button> 
           <Button
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             onClick={handleQuickActions}

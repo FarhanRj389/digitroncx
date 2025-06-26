@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => { 
+  useEffect(() => {
     // Check for existing session
     const savedUser = localStorage.getItem("user")
     if (savedUser) {
@@ -46,11 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     // Mock authentication logic
-    if (email === "admin@digitroncx.com" && password === "admin123") {
+    if (email === "Milhan@digitroncx.com" && password === "Digitroncx12345!") {
       const adminUser: User = {
         id: "1",
-        name: "Admin User",
-        email: "admin@digitroncx.com",
+        name: "Admin Milhan",
+        email: "Milhan@digitroncx.com",
         role: "admin",
       }
       setUser(adminUser)

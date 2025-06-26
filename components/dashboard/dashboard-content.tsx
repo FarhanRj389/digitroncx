@@ -53,8 +53,8 @@ export function DashboardContent({ activeSection }: DashboardContentProps) {
   }
 
   return (
-    <div className="flex-1 overflow-auto bg-gray-50">
-      <div className="p-6 md:p-8 min-h-full">
+    <div className="responsive-main">
+      <div className="responsive-container min-h-full">
         <div className="max-w-7xl mx-auto">{renderContent()}</div>
       </div>
     </div>

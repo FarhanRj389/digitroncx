@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useToast } from "@/hooks/use-toast"
-import { Building, User, DollarSign, Target, Award, Handshake } from "lucide-react"
+import { Building, User, DollarSign, Target, Award } from "lucide-react"
 
 interface ApplyNowModalProps {
   isOpen: boolean
@@ -151,7 +151,7 @@ export function ApplyNowModal({ isOpen, onClose }: ApplyNowModalProps) {
     switch (currentStep) {
       case 1:
         return (
-          <div className="space-y-6 ">
+          <div className="space-y-6">
             <div className="text-center mb-6">
               <User className="h-12 w-12 text-blue-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold text-gray-900">Personal Information</h3>
@@ -691,10 +691,10 @@ export function ApplyNowModal({ isOpen, onClose }: ApplyNowModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto  bg-black bg-opacity-50 text-white">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold flex items-center justify-center"> <Handshake className="h-10 w-10 mr-2 text-pink-400" />Partnership Application</DialogTitle>
-          <DialogDescription className="text-center text-gray-400" >
+          <DialogTitle className="text-2xl font-bold text-center">Partnership Application</DialogTitle>
+          <DialogDescription className="text-center">
             Step {currentStep} of {totalSteps} - Complete all steps to submit your application
           </DialogDescription>
         </DialogHeader>

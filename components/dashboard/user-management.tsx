@@ -33,8 +33,8 @@ interface UserManagementUser {
 const mockUsers: UserManagementUser[] = [
   {
     id: "1",
-    name: "Admin User",
-    email: "admin@digitroncx.com",
+    name: "Admin Milhan",
+    email: "Minlhan@digitroncx.com",
     role: "admin",
     status: "active",
     lastLogin: "2024-01-20",
@@ -42,31 +42,15 @@ const mockUsers: UserManagementUser[] = [
   },
   {
     id: "2",
-    name: "John Smith",
-    email: "john@techcorp.com",
+    name: "Admin Farhan",
+    email: "Farhan@digitroncx.com",
     role: "client",
     status: "active",
     lastLogin: "2024-01-19",
     createdDate: "2024-01-15",
   },
-  {
-    id: "3",
-    name: "Sarah Johnson",
-    email: "sarah@digitalinnovations.com",
-    role: "client",
-    status: "active",
-    lastLogin: "2024-01-18",
-    createdDate: "2024-01-10",
-  },
-  {
-    id: "4",
-    name: "Mike Chen",
-    email: "mike@startuphub.com",
-    role: "client",
-    status: "inactive",
-    lastLogin: "2024-01-12",
-    createdDate: "2024-01-08",
-  },
+ 
+
 ]
 
 export function UserManagement() {

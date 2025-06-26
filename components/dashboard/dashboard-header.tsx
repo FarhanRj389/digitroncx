@@ -37,7 +37,7 @@ export function DashboardHeader() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-blue-600" />
+                    {/* <User className="h-4 w-4 text-blue-600" /> */}
                   </div>
                   <div className="text-left hidden sm:block">
                     <div className="text-sm font-medium">{user?.name}</div>

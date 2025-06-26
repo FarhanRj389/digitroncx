@@ -10,6 +10,7 @@ export function AdminDashboard() {
   const { user } = useAuth()
   const router = useRouter()
   const [activeSection, setActiveSection] = useState("overview")
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     if (!user || user.role !== "admin") {
@@ -17,10 +18,20 @@ export function AdminDashboard() {
     }
   }, [user, router])
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
   if (!user) return null
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-scree overflow-hidden">
       <DashboardSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
       <DashboardContent activeSection={activeSection} />
     </div>

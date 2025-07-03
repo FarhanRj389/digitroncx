@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   ArrowRight,
   Monitor,
@@ -15,15 +16,15 @@ import {
   Star,
   Rocket,
 } from "lucide-react"
+import Price from "./price"
 
 const services = [
   {
     icon: Monitor,
     title: "Premium Website Development",
-    description:
-      "Stunning, high-performance websites that captivate your audience and drive conversions with cutting-edge design.",
-    features: ["AI-Powered Design", "Lightning Fast", "SEO Optimized", "Mobile Perfect"],
-    price: "From $1,500 NZD",
+    description: "Stunning, high-performance websites that captivate your audience and drive conversions with cutting-edge design.",
+    features: ["Custom-based Web Design", "Lightning Fast", "SEO Optimized", "Mobile Perfect"],
+    price: "From $200 ",
     gradient: "from-blue-500 to-cyan-500",
     popular: false,
   },
@@ -32,7 +33,7 @@ const services = [
     title: "Revolutionary Mobile Apps",
     description: "Next-generation mobile applications that redefine user experience across iOS and Android platforms.",
     features: ["Native Performance", "Cross-Platform", "App Store Ready", "24/7 Support"],
-    price: "From $3,000 NZD",
+    price: "From $1,200 NZD",
     gradient: "from-purple-500 to-pink-500",
     popular: false,
   },
@@ -50,17 +51,17 @@ const services = [
     title: "Startup Branding Magic",
     description: "Complete brand transformation that makes your startup unforgettable and market-ready.",
     features: ["Logo Mastery", "Brand Strategy", "Marketing Kit", "Social Media Ready"],
-    price: "From $300 NZD",
+    price: "From $150 NZD",
     gradient: "from-pink-500 to-rose-500",
     popular: true,
   },
   {
     icon: Cloud,
-    title: "Cloud Infrastructure",
+    title: "Channel Partnership",
     description: "Bulletproof cloud solutions with auto-scaling, monitoring, and enterprise-grade security.",
-    features: ["Auto-Scaling", "99.9% Uptime", "Global CDN", "Advanced Monitoring"],
-    price: "From $500 NZD",
-    gradient: "from-indigo-500 to-purple-500",
+    features: ["Lucrative Commission Structure", "Exclusive Partnership Support", "Co-Branding Opportunities", "Lead Generation Tools"],
+    price: "Free",
+    btn: "from-indigo-500 to-purple-500",
     popular: false,
   },
   {
@@ -86,7 +87,7 @@ export default function Services() {
           }
         })
       },
-      { threshold: 0.1 },
+       
     )
 
     const elements = sectionRef.current?.querySelectorAll(".service-card")
@@ -129,7 +130,7 @@ export default function Services() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
           <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-sm font-medium mb-8 animate-bounce-in glass-effect">
-            <Rocket className="h-4 w-4 mr-2 animate-pulse" />🌟 Premium Digital Services
+            <Rocket className="h-4 w-4 mr-2 animate-pulse" /> Premium Digital Services
             <Sparkles className="h-4 w-4 ml-2 animate-spin" />
           </div>
 
@@ -142,29 +143,31 @@ export default function Services() {
           </h2>
 
           <p className="text-xl text-gray-300 max-w-4xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed">
-            🚀 Transform your business with our comprehensive suite of digital services. From startups to enterprises,
+            Transform your business with our comprehensive suite of digital services. From startups to enterprises,
             we deliver solutions that exceed expectations and drive growth.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => {
             const Icon = service.icon
             return (
               <div
                 key={service.title}
-                className={`service-card relative p-8 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-500 hover:-translate-y-3 card-hover group ${
-                  service.popular ? "ring-2 ring-yellow-400/50 shadow-2xl shadow-yellow-400/20" : ""
+                className={` service-card relative px-8 py-14 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-500 hover:-translate-y-3 card-hover group ${
+                  service.popular ? "  ring-2 ring-yellow-400/50 shadow-2xl shadow-yellow-400/20" : ""
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {service.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <div className="relative">
+                  <div className=" absolute -top-[74px] left-1/2 transform -translate-x-1/2">
                     <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-6 py-2 rounded-full text-sm font-bold flex items-center animate-pulse">
                       <Star className="h-4 w-4 mr-2" />
                       Most Popular
                       <Zap className="h-4 w-4 ml-2" />
                     </div>
+                  </div>
                   </div>
                 )}
 
@@ -208,20 +211,34 @@ export default function Services() {
                 {/* Price and CTA */}
                 <div className="flex items-center justify-between">
                   <span className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">
-                    {service.price}
+                    {service.price === "Free"
+                      ? "Free"
+                      : <Price amount={parseInt(service.price.replace(/[^\d]/g, ""))} />}
                   </span>
-                  <Button
-                    className={`${
-                      service.popular
-                        ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:from-yellow-500 hover:to-orange-600"
-                        : `bg-gradient-to-r ${service.gradient} hover:scale-105`
-                    } text-white border-0 rounded-full px-6 py-3 font-semibold transition-all duration-300 hover-lift group`}
-                  >
-                    Get Quote
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                {service.gradient && (
+                  <Link href="/contact" className="z-10">
+                    <Button 
+                      className={`${
+                        service.popular
+                          ? "bg-gradient-to-r from-yellow-400 to-orange-500 text-black hover:from-yellow-500 hover:to-orange-600"
+                          : `bg-gradient-to-r ${service.gradient} hover:scale-105`
+                      } text-white border-0 rounded-full px-6 py-3 font-semibold transition-all duration-300 hover-lift group`}
+                    >
+                      Get Quote
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                )}
+                {service.btn && (
+                  <Link href="/contact" className="z-10">
+                    <Button
+                      className={` ${service.btn} hover:scale-105`} >
+                      Apply Now
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                )}
                 </div>
-
                 {/* Hover Effect Elements */}
                 <div className="absolute top-4 right-4 w-2 h-2 bg-white rounded-full animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div

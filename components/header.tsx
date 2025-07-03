@@ -21,9 +21,9 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "Services", href: "/services" },
     { name: "Projects", href: "/projects" },
+    { name: "Demo", href: "/demo" },
     { name: "Channel Partnership", href: "/partnership" },
     { name: "About", href: "/about" },
-    { name: "More", href: "/more" },
     { name: "Contact", href: "/contact" },
   ]
 
@@ -40,9 +40,8 @@ export default function Header() {
               <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl group-hover:bg-white/20 transition-all duration-300"></div>
             </div>
             <span className="flex items-center text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">
-              DigitronCX
-                 <div className="ml-2 w-3 h-3 bg-blue-400 rounded-full animate-ping opacity-100  transition-opacity duration-500"></div>
-             
+              <img src="/logo.png" alt="Logo" className="w-100 h-40 mt-5"/>
+                 <div className=" w-3 h-3 bg-blue-400 rounded-full animate-ping opacity-100  transition-opacity duration-3000"></div>  
             </span>
             
           </Link>

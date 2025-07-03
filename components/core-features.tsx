@@ -88,7 +88,7 @@ export default function CoreFeatures() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
           <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 rounded-full text-sm font-medium mb-8 animate-bounce-in">
-            <Star className="h-4 w-4 mr-2 animate-spin" />✨ What Makes DigitronCX Extraordinary
+            <Star className="h-4 w-4 mr-2 animate-spin" />What Makes DigitronCX Extraordinary
             <Sparkles className="h-4 w-4 ml-2 animate-pulse" />
           </div>
 
@@ -101,7 +101,7 @@ export default function CoreFeatures() {
           </h2>
 
           <p className="text-xl text-gray-600 max-w-4xl mx-auto animate-fade-in-up animation-delay-200 leading-relaxed">
-            🚀 We don't just build websites and apps - we craft digital masterpieces that captivate, engage, and
+            We don't just build websites and apps - we craft digital masterpieces that captivate, engage, and
             convert. Every pixel, every interaction, every line of code is designed to deliver extraordinary results.
           </p>
         </div>
@@ -156,7 +156,7 @@ export default function CoreFeatures() {
         {/* Bottom CTA Section */}
         <div className="mt-20 text-center animate-fade-in-up animation-delay-800">
           <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white rounded-full font-medium text-lg hover-lift animate-gradient">
-            <Rocket className="h-5 w-5 mr-3 animate-bounce" />✨ Trusted by 500+ businesses across 4 countries
+            <Rocket className="h-5 w-5 mr-3 animate-bounce" />Trusted by 60+ businesses across 4 countries
             <Globe className="h-5 w-5 ml-3 animate-spin" />
           </div>
         </div>

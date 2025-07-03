@@ -65,13 +65,13 @@ export default function Hero() {
           }}
         />
       </div>
-
+{/* 🚀 */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-sm font-medium mb-8 animate-fade-in glass-effect">
-              <Sparkles className="h-4 w-4 mr-2 animate-pulse" />🚀 New Zealand's Premier Digital Innovation Hub
+              <Sparkles className="h-4 w-4 mr-2 animate-pulse" />New Zealand's Premier Digital Innovation Hub
               <Zap className="h-4 w-4 ml-2 animate-bounce" />
             </div>
 
@@ -84,7 +84,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-xl text-gray-300 mb-10 max-w-2xl animate-fade-in-up animation-delay-200 leading-relaxed">
-              🌟 Crafting extraordinary digital experiences with cutting-edge technology. From stunning websites to
+              Crafting extraordinary digital experiences with cutting-edge technology. From stunning websites to
               powerful mobile apps - we bring your vision to life with
               <span className="text-cyan-400 font-semibold"> innovation, creativity, and excellence</span>.
             </p>
@@ -95,7 +95,7 @@ export default function Hero() {
                 className="btn-gradient text-white px-10 py-6 text-lg font-semibold rounded-full hover-lift group"
               >
                 <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
-                Launch Your Project
+                Get Your Free Demo
                 <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
@@ -112,7 +112,7 @@ export default function Hero() {
             <div className="grid grid-cols-3 gap-8 animate-fade-in-up animation-delay-600">
               <div className="text-center group">
                 <div className="text-4xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                  500+
+                40+
                 </div>
                 <div className="text-gray-400 text-sm">Projects Delivered</div>
                 <div className="w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform"></div>

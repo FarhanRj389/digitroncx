@@ -1,12 +1,12 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Check, Star } from "lucide-react"
+import { Check, Link, Star } from "lucide-react"
 
 const pricingPlans = [
   {
     name: "Startup Branding",
-    price: "$300",
+    price: "$150",
     currency: "NZD",
     description: "Perfect for new businesses and startups",
     features: [
@@ -24,7 +24,7 @@ const pricingPlans = [
   },
   {
     name: "Website Essentials",
-    price: "$1,500",
+    price: "$500",
     currency: "NZD",
     description: "Professional website for small businesses",
     features: [
@@ -42,7 +42,7 @@ const pricingPlans = [
   },
   {
     name: "Complete Digital Package",
-    price: "$3,500",
+    price: "$1,500",
     currency: "NZD",
     description: "Everything you need for digital success",
     features: [
@@ -106,7 +106,7 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-
+              <Link href="/contact">
               <Button
                 className={`w-full py-3 text-lg font-medium ${
                   plan.popular ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-gray-900 hover:bg-gray-800 text-white"
@@ -114,15 +114,16 @@ export default function Pricing() {
               >
                 {plan.cta}
               </Button>
+              </Link> 
             </div>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
+        {/* <div className="mt-16 text-center">
           <div className="inline-flex items-center px-6 py-3 bg-white rounded-full shadow-lg">
             <span className="text-gray-700 font-medium">💰 Special Offer: 20% off for first-time clients</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   )

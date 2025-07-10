@@ -23,6 +23,7 @@ import {
   Lightbulb,
   Link,
 } from "lucide-react"
+import FloatingParticles from "@/components/FloatingParticles"
 
 export default function ServicesPage() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -160,20 +161,7 @@ export default function ServicesPage() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
         {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(30)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-blue-400/60 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
+        <FloatingParticles count={30} color="bg-blue-400/60" />
       </div>
 
       <Header />

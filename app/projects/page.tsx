@@ -22,6 +22,7 @@ import {
   Github,
   ArrowRight,
 } from "lucide-react"
+import FloatingParticles from "@/components/FloatingParticles"
 
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState("All")
@@ -118,20 +119,7 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
         {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(25)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-purple-400/60 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
+        <FloatingParticles count={25} color="bg-purple-400/60" />
       </div>
 
       <Header />
@@ -141,7 +129,7 @@ export default function ProjectsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-5xl mx-auto">
             <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-lg font-medium mb-10 animate-bounce-in glass-effect">
-              <Crown className="h-6 w-6 mr-3 animate-pulse text-yellow-400" />🎨 Award-Winning Digital Masterpieces
+              <Crown className="h-6 w-6 mr-3 animate-pulse text-yellow-400" />Award-Winning Digital Masterpieces
               <Sparkles className="h-6 w-6 ml-3 animate-spin text-purple-400" />
             </div>
 
@@ -154,7 +142,7 @@ export default function ProjectsPage() {
             </h1>
 
             <p className="text-2xl text-gray-300 mb-12 animate-fade-in-up animation-delay-200 leading-relaxed">
-              🚀 Explore our diverse collection of
+               Explore our diverse collection of
               <span className="text-purple-400 font-semibold"> award-winning projects</span> that have transformed
               businesses and delivered extraordinary results across industries and technologies.
             </p>

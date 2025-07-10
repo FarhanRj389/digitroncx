@@ -20,6 +20,7 @@ import {
   Shield,
   CheckCircle,
 } from "lucide-react"
+import FloatingParticles from "@/components/FloatingParticles"
 
 export default function ContactPage() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -182,20 +183,7 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
         {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-green-400/60 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
+        <FloatingParticles count={20} color="bg-green-400/60" />
       </div>
 
       <Header />

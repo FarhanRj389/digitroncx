@@ -5,8 +5,11 @@ import Image from "next/image"
 
 const countries = [
   { code: "NZD", name: "New Zealand", flag: "/FlagNZ.png" },
-  { code: "USD", name: "USA", flag: "/Flag_US.png" },
+  { code: "GBP", name: "Australia", flag: "/Flag_UK.png" },
+  { code: "USD", name: "USA", flag: "/usa_flag.png" },
   { code: "GBP", name: "UK", flag: "/Flag_UK.png" },
+  { code: "GBP", name: "UAE", flag: "/Flag_UK.png" },
+  
 ]
 
 export default function CurrencyModal() {
@@ -33,7 +36,7 @@ export default function CurrencyModal() {
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999]">
-      <div className="bg-black rounded-2xl px-30 py-12 max-w-sm w-full text-center border border-white/10 shadow-2xl">
+      <div className="bg-black rounded-2xl px-30 py-12  w-full text-center border border-white/10 shadow-2xl">
         <h2 className="text-2xl font-bold mb-6 text-white">Select Your Country</h2>
         <div className="flex justify-center gap-8">
           {countries.map(c => (

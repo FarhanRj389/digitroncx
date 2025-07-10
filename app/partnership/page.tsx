@@ -1478,7 +1478,7 @@ export default function PartnershipPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-5xl mx-auto">
             <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-lg font-medium mb-10 animate-bounce-in glass-effect">
-              <Crown className="h-6 w-6 mr-3 animate-pulse text-yellow-400" />🤝 Exclusive Channel Partnership Portal
+              <Crown className="h-6 w-6 mr-3 animate-pulse text-yellow-400" />Exclusive Channel Partnership Portal
               <Sparkles className="h-6 w-6 ml-3 animate-spin text-purple-400" />
             </div>
 
@@ -1491,7 +1491,7 @@ export default function PartnershipPage() {
             </h1>
 
             <p className="text-2xl text-gray-300 mb-12 animate-fade-in-up animation-delay-200 leading-relaxed">
-              🚀 Join our exclusive partner network and unlock
+              Join our exclusive partner network and unlock
               <span className="text-purple-400 font-semibold"> lucrative opportunities</span> with secure access to
               manage client projects, track commissions, and access premium resources.
             </p>

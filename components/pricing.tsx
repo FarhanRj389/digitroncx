@@ -65,7 +65,7 @@ export default function Pricing() {
     <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Affordable Service Packages</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Affordable Bundles</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Transparent pricing with no hidden costs. Choose the package that best fits your business needs and budget.
             All prices in New Zealand Dollars.

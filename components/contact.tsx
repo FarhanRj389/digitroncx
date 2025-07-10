@@ -29,38 +29,66 @@ export default function Contact() {
   const [currentStep, setCurrentStep] = useState(1)
   const { toast } = useToast()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you within 24 hours.",
-    })
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      service: "",
-      message: "",
-      company: "",
-      budget: "",
-      timeline: "",
-      priority: "",
-      platforms: [],
-      features: [],
-      technicalRequirements: "",
-      source: "",
-      contactMethod: "",
-    })
-    setCurrentStep(1)
+    try {
+      const res = await fetch('/api/send-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        toast({
+          title: 'Message Sent!',
+          description: "We'll get back to you within 24 hours.",
+        })
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          service: "",
+          message: "",
+          company: "",
+          budget: "",
+          timeline: "",
+          priority: "",
+          platforms: [],
+          features: [],
+          technicalRequirements: "",
+          source: "",
+          contactMethod: "",
+        })
+        setCurrentStep(1)
+      } else {
+        toast({
+          title: 'Error',
+          description: data.error || 'Failed to send message.',
+          variant: 'destructive',
+        })
+      }
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Failed to send message.',
+        variant: 'destructive',
+      })
+    }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
-  }
+  const handleChange = (e: any) => {
+    if (Array.isArray(e.target.value)) {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value as string[],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  };
 
   return (
     <section className="py-20 bg-gray-900 text-white">
@@ -134,7 +162,7 @@ export default function Contact() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white text-gray-900 p-8 rounded-2xl">
+          <form onSubmit={handleSubmit} className="bg-white text-gray-900 p-8 rounded-2xl">
             <div className="mb-8">
               <h3 className="text-2xl font-bold mb-2">Send us a Message</h3>
               <p className="text-gray-600">Step {currentStep} of 4 - Tell us about your project needs</p>
@@ -438,7 +466,7 @@ export default function Contact() {
                 </Button>
               )}
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </section>

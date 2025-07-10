@@ -5,6 +5,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Users, Award, Globe, Target, Sparkles, Rocket, Star, Crown, Heart, Zap } from "lucide-react"
+import FloatingParticles from "@/components/FloatingParticles"
 
 export default function AboutPage() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -28,7 +29,7 @@ export default function AboutPage() {
   }, [])
 
   const stats = [
-    { number: "500+", label: "Dreams Realized", icon: Star, gradient: "from-yellow-400 to-orange-500" },
+    { number: "50+", label: "Dreams Realized", icon: Star, gradient: "from-yellow-400 to-orange-500" },
     { number: "4", label: "Countries Conquered", icon: Globe, gradient: "from-blue-400 to-purple-500" },
     { number: "5+", label: "Years of Magic", icon: Crown, gradient: "from-purple-400 to-pink-500" },
     { number: "24/7", label: "Always Here", icon: Heart, gradient: "from-pink-400 to-red-500" },
@@ -99,20 +100,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
         {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(25)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-blue-400/60 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
+        <FloatingParticles count={25} color="bg-blue-400/60" />
       </div>
 
       <Header />
@@ -122,7 +110,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-5xl mx-auto">
             <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-lg font-medium mb-10 animate-bounce-in glass-effect">
-              <Crown className="h-6 w-6 mr-3 animate-pulse text-yellow-400" />🌟 Meet the Digital Dream Makers
+              <Crown className="h-6 w-6 mr-3 animate-pulse text-yellow-400" />Meet the Digital Dream Makers
               <Sparkles className="h-6 w-6 ml-3 animate-spin text-purple-400" />
             </div>
 
@@ -135,7 +123,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="text-2xl text-gray-300 mb-12 animate-fade-in-up animation-delay-200 leading-relaxed">
-              🚀 We're not just a web development agency—we're digital alchemists transforming visions into
+               We're not just a web development agency—we're digital alchemists transforming visions into
               <span className="text-cyan-400 font-semibold"> extraordinary digital experiences</span> that captivate,
               inspire, and deliver results across four countries.
             </p>
@@ -163,17 +151,17 @@ export default function AboutPage() {
 
               <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                 <p>
-                  🌟 DigitronCX emerged from a simple yet powerful belief: every business deserves a digital presence
+                  DigitronCX emerged from a simple yet powerful belief: every business deserves a digital presence
                   that's not just functional, but absolutely extraordinary. As a proud subsidiary of Eracus BPO Limited,
                   we've built our foundation on legal excellence and unwavering trust.
                 </p>
                 <p>
-                  🏢 <strong className="text-white">Legally Registered:</strong> NZBN: 9429052521980 | NTN: 8347860
-                  <br />📍 <strong className="text-white">Global Presence:</strong> New Zealand HQ with development
+                   <strong className="text-white">Legally Registered:</strong> NZBN: 9429052521980 | NTN: 8347860
+                  <br /><strong className="text-white">Global Presence:</strong> New Zealand HQ with development
                   powerhouses in Auckland and Karachi
                 </p>
                 <p>
-                  🚀 From our headquarters in beautiful New Zealand to our innovation labs across Australia, China, and
+                  From our headquarters in beautiful New Zealand to our innovation labs across Australia, China, and
                   Pakistan, we've created a 24/7 digital ecosystem that never sleeps, ensuring your dreams are always
                   being crafted into reality.
                 </p>

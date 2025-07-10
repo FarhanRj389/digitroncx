@@ -15,8 +15,10 @@ import {
   Zap,
   Star,
   Rocket,
+  Handshake,
 } from "lucide-react"
 import Price from "./price"
+import FloatingParticles from "@/components/FloatingParticles"
 
 const services = [
   {
@@ -39,9 +41,9 @@ const services = [
   },
   {
     icon: Database,
-    title: "Enterprise Web Solutions",
-    description: "Scalable, secure web applications engineered for enterprise-level performance and reliability.",
-    features: ["Cloud Architecture", "Advanced Security", "API Integration", "Real-time Analytics"],
+    title: "Custom Web Solutions",
+    description: "Scalable, secure web applications engineered for professional-level performance and reliability.",
+    features: ["Custom Web Hub ","Cloud Architecture", "Realtime Database Integration", "API Integration"],
     price: "From $2,500 NZD",
     gradient: "from-emerald-500 to-teal-500",
     popular: false,
@@ -50,16 +52,16 @@ const services = [
     icon: Palette,
     title: "Startup Branding Magic",
     description: "Complete brand transformation that makes your startup unforgettable and market-ready.",
-    features: ["Logo Mastery", "Brand Strategy", "Marketing Kit", "Social Media Ready"],
+    features: ["Logo & Visual Identity Design", "Brand Color & Typography", "Branded Templates & assets", "Business Collaterals Design"],
     price: "From $150 NZD",
     gradient: "from-pink-500 to-rose-500",
     popular: true,
   },
   {
-    icon: Cloud,
+    icon: Handshake,
     title: "Channel Partnership",
-    description: "Bulletproof cloud solutions with auto-scaling, monitoring, and enterprise-grade security.",
-    features: ["Lucrative Commission Structure", "Exclusive Partnership Support", "Co-Branding Opportunities", "Lead Generation Tools"],
+    description: "Promote our soultions strategically and grow with us.Earn Reward and Commissions on qualified Referrals and Sales",
+    features: ["White-Labeled Soultions", "Dedicated Partner Portal", "Rewards & Commissions", "Strategic Alliance & Collaboration"],
     price: "Free",
     btn: "from-indigo-500 to-purple-500",
     popular: false,
@@ -68,7 +70,7 @@ const services = [
     icon: Search,
     title: "Digital Marketing Mastery",
     description: "Data-driven marketing strategies that skyrocket your online presence and boost ROI.",
-    features: ["SEO Excellence", "Content Strategy", "Social Growth", "Performance Analytics"],
+    features: ["Social Media Setup", "Performance Marketing", "Content Strategy & Design", "Result Driven Analytics"],
     price: "From $800 NZD",
     gradient: "from-orange-500 to-red-500",
     popular: false,
@@ -111,20 +113,7 @@ export default function Services() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
 
         {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-blue-400/60 rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${6 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
+        <FloatingParticles count={15} color="bg-blue-400/60" />
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

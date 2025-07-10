@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Play, Sparkles, Zap, Globe2, Rocket } from "lucide-react"
+import FloatingParticles from "@/components/FloatingParticles"
 
 export default function Hero() {
   const globeRef = useRef<HTMLDivElement>(null)
@@ -29,7 +30,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden overflow-x-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Gradient Orbs */}
@@ -41,20 +42,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
 
         {/* Floating Particles */}
-        <div className="particles">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="particle"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 8}s`,
-                animationDuration: `${8 + Math.random() * 4}s`,
-              }}
-            />
-          ))}
-        </div>
+        <FloatingParticles count={20} color="particle" />
 
         {/* Interactive Light Effect */}
         <div
@@ -67,10 +55,10 @@ export default function Hero() {
       </div>
 {/* 🚀 */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="pt-36 grid grid-cols-1 lg:grid-cols-2 gap-12 sm:pt-20 items-center">
           {/* Content */}
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-sm font-medium mb-8 animate-fade-in glass-effect">
+          <div className="text-center lg:text-left ">
+            <div className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-sm font-medium mb-8 animate-fade-in glass-effect">
               <Sparkles className="h-4 w-4 mr-2 animate-pulse" />New Zealand's Premier Digital Innovation Hub
               <Zap className="h-4 w-4 ml-2 animate-bounce" />
             </div>
@@ -109,7 +97,7 @@ export default function Hero() {
             </div>
 
             {/* Enhanced Stats */}
-            <div className="grid grid-cols-3 gap-8 animate-fade-in-up animation-delay-600">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 animate-fade-in-up animation-delay-600 text-center">
               <div className="text-center group">
                 <div className="text-4xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
                 40+
@@ -135,8 +123,8 @@ export default function Hero() {
           </div>
 
           {/* Enhanced Globe Animation */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative w-[500px] h-[500px] animate-fade-in animation-delay-800">
+          <div className="hidden lg:flex justify-center lg:justify-end mt-10 lg:mt-0">
+            <div className="relative w-64 h-64 sm:w-96 sm:h-96 lg:w-[500px] lg:h-[500px] animate-fade-in animation-delay-800">
               {/* Orbital Rings */}
               <div className="absolute inset-0 border-2 border-blue-400/30 rounded-full animate-rotate"></div>
               <div
@@ -215,7 +203,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="hidden lg:flex absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
         </div>

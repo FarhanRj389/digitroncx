@@ -439,6 +439,8 @@ html {
   /* overflow: hidden; */
 }
 
+/* Removed shimmer/flicker effect */
+/*
 .card-hover::before {
   content: "";
   position: absolute;
@@ -453,6 +455,7 @@ html {
 .card-hover:hover::before {
   left: 100%;
 }
+*/
 
 .card-hover:hover {
   transform: translateY(-5px);

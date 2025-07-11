@@ -11,18 +11,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // Use environment variables for SMTP config
   const transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOST, // e.g. smtp.digitroncx.com
-    port: Number(process.env.MAIL_PORT) || 465, // default to 587 if not set
-    secure: (process.env.MAIL_PORT === '465'), // true for 465, false for 587
+    host: process.env.DEMO_MAIL_HOST, // e.g. smtp.digitroncx.com
+    port: Number(process.env.DEMO_MAIL_PORT) || 465, // default to 587 if not set
+    secure: (process.env.DEMO_MAIL_PORT === '465'), // true for 465, false for 587
     auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
+      user: process.env.DEMO_MAIL_USER,
+      pass: process.env.DEMO_MAIL_PASS,
     },
   })
 
   const mailOptions = {
-    from: process.env.MAIL_USER,
-    to: process.env.MAIL_USER, // or any other email you want to receive at
+    from: process.env.DEMO_MAIL_USER,
+    to: process.env.DEMO_MAIL_USER, // or any other email you want to receive at
     subject: 'New Demo Form Submission',
     html: `
       <h2>Demo Form Submission Details</h2>

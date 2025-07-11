@@ -24,7 +24,7 @@ export default function FloatingParticles({ count = 20, color = "bg-green-400/60
   }, [count]);
 
   return (
-    <div className="particles">
+    <div className="particles pointer-events-none">
       {particles.map((p, i) => (
         <div
           key={i}

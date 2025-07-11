@@ -9,19 +9,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } = req.body;
 
   const transporter = nodemailer.createTransport({
-    host: process.env.MAIL_HOST,
-    port: Number(process.env.MAIL_PORT) || 587,
-    secure: (process.env.MAIL_PORT === '465'),
+    host: process.env.CONTACT_MAIL_HOST,
+    port: Number(process.env.CONTACT_MAIL_PORT) || 587,
+    secure: (process.env.CONTACT_MAIL_PORT === '465'),
     auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
+      user: process.env.CONTACT_MAIL_USER,
+      pass: process.env.CONTACT_MAIL_PASS,
     },
   });
 
   const mailOptions = {
-    from: process.env.MAIL_USER,
+    from: process.env.CONTACT_MAIL_USER,
     to: 'info@digitroncx.com',
-    subject: 'New Contact Form Submission',
+    subject: 'New Project Query Form Submission',
     html: `
       <h2>Contact Form Submission</h2>
       <p><b>Name:</b> ${name}</p>

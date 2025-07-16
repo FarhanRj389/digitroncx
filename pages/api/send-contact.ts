@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
+import { supabase } from '../../lib/supabase';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
@@ -7,6 +8,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const {
     name, email, phone, service, message, company, budget, timeline, priority, platforms, features, technicalRequirements, source, contactMethod
   } = req.body;
+
+  // Insert into Supabase database
+  const { error: dbError } = await supabase
+    .from('contacts')
+    .insert([{
+      name,
+      email,
+      phone,
+      service,
+      message,
+      company,
+      budget,
+      timeline,
+      priority,
+      platforms: Array.isArray(platforms) ? platforms.join(',') : platforms,
+      features: Array.isArray(features) ? features.join(',') : features,
+      technical_requirements: technicalRequirements,
+      source,
+      contact_method: contactMethod,
+    }]);
+
+  if (dbError) {
+    return res.status(500).json({ error: 'Database error: ' + dbError.message });
+  }
 
   const transporter = nodemailer.createTransport({
     host: process.env.CONTACT_MAIL_HOST,

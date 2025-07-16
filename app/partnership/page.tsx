@@ -33,6 +33,7 @@ import {
   Trash2,
 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
+import { supabase } from '@/lib/supabase';
 
 // Mock partner data with your specified credentials
 const mockPartners = [
@@ -570,50 +571,58 @@ export default function PartnershipPage() {
     })
   }
 
-  const handlePartnershipFormSubmit = () => {
-    const newApplication = {
-      id: Math.max(...partnershipApplications.map((app) => app.id)) + 1,
-      ...partnershipFormData,
-      status: "Pending Review",
-      submittedDate: new Date().toISOString().split("T")[0],
-      lastUpdated: new Date().toISOString().split("T")[0],
+  const handlePartnershipFormSubmit = async () => {
+    // Prepare data for Supabase
+    const data = {
+      firstName: partnershipFormData.personalInfo.firstName,
+      lastName: partnershipFormData.personalInfo.lastName,
+      email: partnershipFormData.personalInfo.email,
+      phone: partnershipFormData.personalInfo.phone,
+      position: partnershipFormData.personalInfo.position,
+      experience: partnershipFormData.personalInfo.experience,
+      companyName: partnershipFormData.businessInfo.companyName,
+      website: partnershipFormData.businessInfo.website,
+      industry: partnershipFormData.businessInfo.industry,
+      companySize: partnershipFormData.businessInfo.companySize,
+      location: partnershipFormData.businessInfo.location,
+      registrationNumber: partnershipFormData.businessInfo.registrationNumber,
+      partnershipType: partnershipFormData.partnershipInfo.partnershipType,
+      expectedVolume: partnershipFormData.partnershipInfo.expectedVolume,
+      targetMarkets: Array.isArray(partnershipFormData.partnershipInfo.targetMarkets) ? partnershipFormData.partnershipInfo.targetMarkets.join(',') : partnershipFormData.partnershipInfo.targetMarkets,
+      experienceDetails: partnershipFormData.partnershipInfo.experience,
+      motivation: partnershipFormData.partnershipInfo.motivation,
+      servicesOffered: Array.isArray(partnershipFormData.servicesOffered) ? partnershipFormData.servicesOffered.join(',') : partnershipFormData.servicesOffered,
+      status: 'Pending Review',
+      submittedDate: new Date().toISOString().split('T')[0],
+      lastUpdated: new Date().toISOString().split('T')[0],
+    };
+
+    const { error } = await supabase
+      .from('partnership_applications')
+      .insert([data]);
+
+    if (error) {
+      toast({
+        title: '❌ Submission Failed',
+        description: 'There was an error submitting your application. Please try again.',
+        variant: 'destructive',
+      });
+      return;
     }
 
-    setPartnershipApplications([...partnershipApplications, newApplication])
-    setShowPartnershipForm(false)
-    setCurrentPartnershipStep(1)
+    setShowPartnershipForm(false);
+    setCurrentPartnershipStep(1);
     setPartnershipFormData({
-      personalInfo: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        position: "",
-        experience: "",
-      },
-      businessInfo: {
-        companyName: "",
-        website: "",
-        industry: "",
-        companySize: "",
-        location: "",
-        registrationNumber: "",
-      },
-      partnershipInfo: {
-        partnershipType: "",
-        expectedVolume: "",
-        targetMarkets: [],
-        experience: "",
-        motivation: "",
-      },
+      personalInfo: { firstName: '', lastName: '', email: '', phone: '', position: '', experience: '' },
+      businessInfo: { companyName: '', website: '', industry: '', companySize: '', location: '', registrationNumber: '' },
+      partnershipInfo: { partnershipType: '', expectedVolume: '', targetMarkets: [], experience: '', motivation: '' },
       servicesOffered: [],
-    })
-
+    });
     toast({
-      title: "🎉 Partnership Application Submitted!",
+      title: '🎉 Partnership Application Submitted!',
       description: "Thank you for your interest! We'll review your application and get back to you within 48 hours.",
-    })
-  }
+    });
+  };
 
   const handleUpdateApplication = (applicationId, updatedData) => {
     setPartnershipApplications(

@@ -52,7 +52,7 @@ export default function ProjectsPage() {
   const featuredProjects = [
     {
       title: "Aisa Halal Meet",
-      client: "Internal Project",
+      // client: "Internal Project",
       category: "E-commerce",
       links: "https://aisahalalmeet.netlify.app/",
       description: "Aisa Halal Meet is a modern online halal meat ordering platform that allows users to browse, select, and order a wide range of halal-certified meat products with fast delivery and clear quality assurance.",
@@ -64,24 +64,57 @@ export default function ProjectsPage() {
     },
     {
       title: "Fone Fixer",
-      client: "Fone Fixer ",
+      // client: "Fone Fixer ",
       category: "Web Development", // changed from 'Web Application'
       links: "https://fone-fixer.netlify.app/",
       description: "A responsive web app to showcase repair services and allow customers to book appointments and view pricing.",
       image: "/fonefixer.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
-      results: ["Increased online bookings by X%", "Improved mobile engagement", "Fast-loading site"],
+      results: ["Increased online bookings by 65%", "Improved mobile engagement", "Fast-loading site"],
       gradient: "from-green-500 to-emerald-600",
       featured: true,
     },
     {
       title: "Chiropractic Healthcare",
-      client: "Chiropractic Clinic",
+      // client: "Chiropractic Clinic",
       category: "Web Development", // changed from 'Web Application'
       description: "A clean, responsive website showcasing chiropractic services, appointment booking, and trust-building elements like testimonials and FAQs.",
       image: "/health.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
-      results: ["X% increase in appointment requests", "Fast mobile performance", "Improved patient trust"],
+      results: ["60% increase in appointment requests", "Fast mobile performance", "Improved patient trust"],
+      gradient: "from-purple-500 to-pink-600",
+      featured: true,
+    },
+    {
+      title: "Garden Landscaping",
+      // client: "Your Client Name",
+      category: "Web Development", // changed from 'Web Application'
+      description: "A clean, responsive website showcasing landscaping services such as design, maintenance, patios, planting, with galleries and contact forms.",
+      image: "/garden.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      results: ["40% increase in customer inquiries", "Mobile‑friendly design", "Project gallery boosted engagement"],
+      gradient: "from-purple-500 to-pink-600",
+      featured: true,
+    },
+    {
+      title: "Five Star",
+      // client: "Your Client Name",
+      category: "Web Development", // changed from 'Web Application'
+      description: "Clear, engaging one-liner + expanded intro about purpose and audience.",
+      image: "/fivestar.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      results: ["Key achievement #1", "Key achievement #2"],
+      gradient: "from-purple-500 to-pink-600",
+      featured: true,
+    },
+    {
+      title: "Chiropractic Healthcare",
+      // client: "Your Client Name",
+      category: "Web Development", // changed from 'Web Application'
+      description: "A clean, responsive website built to increase patient trust through clear service descriptions, appointment booking, and testimonials.",
+      image: "/healthcare.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      results: ["📈 30% increase in appointment requests", "⚡️ 40% faster page load times", "📲 50% mobile traffic engagement"],
       gradient: "from-purple-500 to-pink-600",
       featured: true,
     },
@@ -329,7 +362,7 @@ export default function ProjectsPage() {
                       >
                         {project.category}
                       </span>
-                      <span className="text-cyan-400 font-medium">{project.client}</span>
+                      {/*<span className="text-cyan-400 font-medium">{project.client}</span>*/}
                     </div>
 
                     <h3 className="text-4xl font-bold text-white mb-4 group-hover:text-gradient transition-all duration-300">

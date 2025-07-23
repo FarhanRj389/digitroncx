@@ -23,9 +23,11 @@ import {
   ArrowRight,
 } from "lucide-react"
 import FloatingParticles from "@/components/FloatingParticles"
+import Link from "next/link"
 
 export default function ProjectsPage() {
   const [activeFilter, setActiveFilter] = useState("All")
+  const [searchTerm, setSearchTerm] = useState("")
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -46,50 +48,76 @@ export default function ProjectsPage() {
     return () => observer.disconnect()
   }, [])
 
-  const categories = [
-    { name: "All", count: 50, gradient: "from-blue-500 to-purple-600" },
-    { name: "Web Development", count: 25, gradient: "from-green-500 to-blue-600" },
-    { name: "Mobile Apps", count: 15, gradient: "from-purple-500 to-pink-600" },
-    { name: "E-commerce", count: 12, gradient: "from-orange-500 to-red-600" },
-    { name: "Branding", count: 18, gradient: "from-pink-500 to-rose-600" },
-    { name: "Enterprise", count: 8, gradient: "from-indigo-500 to-purple-600" },
-  ]
-
+  // Move featuredProjects above categories
   const featuredProjects = [
     {
-      title: "Revolutionary E-Commerce Platform",
-      client: "Global Retail Corp",
+      title: "Aisa Halal Meet",
+      client: "Internal Project",
       category: "E-commerce",
-      description: "Complete digital transformation with AI-powered recommendations and seamless checkout experience.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["Next.js", "AI/ML", "Stripe", "PostgreSQL"],
-      results: ["300% conversion increase", "50% faster load times", "2M+ users"],
+      links: "https://aisahalalmeet.netlify.app/",
+      description: "Aisa Halal Meet is a modern online halal meat ordering platform that allows users to browse, select, and order a wide range of halal-certified meat products with fast delivery and clear quality assurance.",
+      image: "/Aishahalal meets.png",
+      technologies: ["Next.js", "Tailwind CSS", "TypeScript", "React"],
+      results: ["Enabled local communities to access halal meat easily online", "Optimized for mobile shopping", "Fast loading and clean UX"],
       gradient: "from-blue-500 to-purple-600",
       featured: true,
     },
     {
-      title: "Healthcare Management System",
-      client: "MedTech Solutions",
-      category: "Web Application",
-      description: "HIPAA-compliant patient management system with real-time analytics and telemedicine integration.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React", "Node.js", "MongoDB", "WebRTC"],
-      results: ["80% admin time saved", "95% patient satisfaction", "HIPAA compliant"],
+      title: "Fone Fixer",
+      client: "Fone Fixer ",
+      category: "Web Development", // changed from 'Web Application'
+      links: "https://fone-fixer.netlify.app/",
+      description: "A responsive web app to showcase repair services and allow customers to book appointments and view pricing.",
+      image: "/fonefixer.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      results: ["Increased online bookings by X%", "Improved mobile engagement", "Fast-loading site"],
       gradient: "from-green-500 to-emerald-600",
       featured: true,
     },
     {
-      title: "FinTech Mobile Revolution",
-      client: "Digital Bank NZ",
-      category: "Mobile App",
-      description: "Award-winning mobile banking app with biometric security and instant transfers.",
-      image: "/placeholder.svg?height=400&width=600",
-      technologies: ["React Native", "Blockchain", "Biometrics", "AWS"],
-      results: ["1M+ downloads", "4.9★ app rating", "Bank-grade security"],
+      title: "Chiropractic Healthcare",
+      client: "Chiropractic Clinic",
+      category: "Web Development", // changed from 'Web Application'
+      description: "A clean, responsive website showcasing chiropractic services, appointment booking, and trust-building elements like testimonials and FAQs.",
+      image: "/health.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      results: ["X% increase in appointment requests", "Fast mobile performance", "Improved patient trust"],
       gradient: "from-purple-500 to-pink-600",
       featured: true,
     },
+  ];
+
+  const categories = [
+    { name: "All", gradient: "from-blue-500 to-purple-600" },
+    { name: "Web Development", gradient: "from-green-500 to-blue-600" },
+    { name: "Mobile Apps", gradient: "from-purple-500 to-pink-600" },
+    { name: "E-commerce", gradient: "from-orange-500 to-red-600" },
+    { name: "Branding", gradient: "from-pink-500 to-rose-600" },
+    { name: "Enterprise", gradient: "from-indigo-500 to-purple-600" },
   ]
+
+  // Calculate counts dynamically for each category
+  const categoriesWithCounts = categories.map((cat) => {
+    if (cat.name === "All") {
+      return { ...cat, count: featuredProjects.length };
+    }
+    const count = featuredProjects.filter((project) => project.category === cat.name).length;
+    return { ...cat, count };
+  });
+
+  // Filter projects by category and search term
+  const filteredProjects = featuredProjects.filter((project) => {
+    // Category filter
+    const matchesCategory = activeFilter === "All" || project.category === activeFilter;
+    // Search filter (title, description, category, technologies)
+    const search = searchTerm.toLowerCase();
+    const matchesSearch =
+      project.title.toLowerCase().includes(search) ||
+      project.description.toLowerCase().includes(search) ||
+      project.category.toLowerCase().includes(search) ||
+      project.technologies.some((tech) => tech.toLowerCase().includes(search));
+    return matchesCategory && (search === "" || matchesSearch);
+  });
 
   const achievements = [
     { icon: Award, number: "15+", text: "Industry Awards Won", gradient: "from-yellow-400 to-orange-500" },
@@ -155,12 +183,19 @@ export default function ProjectsPage() {
                   type="text"
                   placeholder="Search amazing projects..."
                   className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/30 rounded-2xl text-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
                 />
               </div>
-              <Button className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl hover-lift">
+              {/*
+              <Button className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-2xl hover-lift"
+                type="button"
+                onClick={() => alert('Advanced filters coming soon!')}
+              >
                 <Filter className="h-5 w-5 mr-2" />
                 Advanced Filters
               </Button>
+              */}
             </div>
 
             {/* Achievements */}
@@ -197,7 +232,7 @@ export default function ProjectsPage() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 animate-on-scroll">
-            {categories.map((category) => (
+            {categoriesWithCounts.map((category) => (
               <button
                 key={category.name}
                 onClick={() => setActiveFilter(category.name)}
@@ -242,7 +277,7 @@ export default function ProjectsPage() {
           </div>
 
           <div className="space-y-16">
-            {featuredProjects.map((project, index) => (
+            {filteredProjects.map((project, index) => (
               <div
                 key={index}
                 className={`animate-on-scroll grid lg:grid-cols-2 gap-12 items-center ${
@@ -254,20 +289,22 @@ export default function ProjectsPage() {
                 <div className={`relative group ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
                   <div className="relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20 hover-lift">
                     <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                      <div className="text-6xl text-white/20">🚀</div>
+                     <img src={project.image} alt={project.image} />
                     </div>
 
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                       <div className="absolute bottom-6 left-6 right-6 flex gap-3">
-                        <Button size="sm" className="bg-white/90 text-gray-900 hover:bg-white">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Live Demo
-                        </Button>
-                        <Button size="sm" variant="outline" className="bg-white/10 text-white border-white/30">
+                        <a href={project.links} target="_blank" rel="noopener noreferrer">
+                          <Button size="sm" className="bg-white/90 text-gray-900 hover:bg-white">
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                             Live Demo 
+                          </Button>
+                        </a>
+                        {/* <Button size="sm" variant="outline" className="bg-white/10 text-white border-white/30">
                           <Github className="h-4 w-4 mr-2" />
                           Case Study
-                        </Button>
+                        </Button> */}
                       </div>
                     </div>
 
@@ -330,12 +367,12 @@ export default function ProjectsPage() {
                     </div>
                   </div>
 
-                  <Button
+                  {/* <Button
                     className={`bg-gradient-to-r ${project.gradient} hover:scale-105 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 hover-lift group`}
                   >
                     View Full Case Study
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             ))}
@@ -343,8 +380,6 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Projects Component */}
-      <Projects />
 
       {/* Technologies Section */}
       <section className="py-20 relative z-10">

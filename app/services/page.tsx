@@ -191,14 +191,18 @@ export default function ServicesPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up animation-delay-400 mb-16">
+              
+              <a href="/contact">
               <Button
                 size="lg"
                 className="btn-gradient text-white px-12 py-6 text-xl font-bold rounded-full hover-lift group"
-              >
+                >
                 <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                 Get Free Consultation
                 <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
               </Button>
+                </a>
+                <a href="/projects">
               <Button
                 size="lg"
                 variant="outline"
@@ -207,6 +211,7 @@ export default function ServicesPage() {
                 <Star className="mr-3 h-6 w-6 group-hover:animate-spin" />
                 View Our Portfolio
               </Button>
+              </a>
             </div>
 
             {/* Quick Stats */}
@@ -435,23 +440,28 @@ export default function ServicesPage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                  
+                  <a href="/contact">
                   <Button
                     size="lg"
                     className="btn-gradient text-white px-12 py-6 text-xl font-bold rounded-full hover-lift group"
-                  >
+                    >
                     <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                     Start Your Project Today
                     <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
                   </Button>
+                    </a>
                 
+                  <a href="/contact">
                   <Button
                     size="lg"
                     variant="outline"
                     className="glass-effect text-white border-white/30 px-12 py-6 text-xl font-bold rounded-full hover-glow group"
-                  >
+                    >
                     <Star className="mr-3 h-6 w-6 group-hover:animate-spin" />
                     Get Free Consultation
                   </Button>
+                    </a>
                  
                 </div>
               </div>

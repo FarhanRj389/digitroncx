@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import Projects from "@/components/projects"
 import { Button } from "@/components/ui/button"
 import {
   Filter,
@@ -52,19 +51,18 @@ export default function ProjectsPage() {
   const featuredProjects = [
     {
       title: "Aisa Halal Meet",
-      // client: "Internal Project",
       category: "E-commerce",
-      links: "https://aisahalalmeet.netlify.app/",
       description: "Aisa Halal Meet is a modern online halal meat ordering platform that allows users to browse, select, and order a wide range of halal-certified meat products with fast delivery and clear quality assurance.",
       image: "/Aishahalal meets.png",
       technologies: ["Next.js", "Tailwind CSS", "TypeScript", "React"],
+      links: "https://aisahalalmeet.netlify.app/",
       results: ["Enabled local communities to access halal meat easily online", "Optimized for mobile shopping", "Fast loading and clean UX"],
       gradient: "from-blue-500 to-purple-600",
       featured: true,
+      // client: "Internal Project",
     },
     {
       title: "Fone Fixer",
-      // client: "Fone Fixer ",
       category: "Web Development", // changed from 'Web Application'
       links: "https://fone-fixer.netlify.app/",
       description: "A responsive web app to showcase repair services and allow customers to book appointments and view pricing.",
@@ -73,10 +71,11 @@ export default function ProjectsPage() {
       results: ["Increased online bookings by 65%", "Improved mobile engagement", "Fast-loading site"],
       gradient: "from-green-500 to-emerald-600",
       featured: true,
+      // client: "Fone Fixer ",
     },
     {
-      title: "Chiropractic Healthcare",
       // client: "Chiropractic Clinic",
+      title: "Chiropractic Healthcare",
       category: "Web Development", // changed from 'Web Application'
       description: "A clean, responsive website showcasing chiropractic services, appointment booking, and trust-building elements like testimonials and FAQs.",
       image: "/health.png",
@@ -87,8 +86,7 @@ export default function ProjectsPage() {
     },
     {
       title: "Garden Landscaping",
-      // client: "Your Client Name",
-      category: "Web Development", // changed from 'Web Application'
+      category: "Web Development",
       description: "A clean, responsive website showcasing landscaping services such as design, maintenance, patios, planting, with galleries and contact forms.",
       image: "/garden.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
@@ -98,8 +96,7 @@ export default function ProjectsPage() {
     },
     {
       title: "Five Star",
-      // client: "Your Client Name",
-      category: "Web Development", // changed from 'Web Application'
+      category: "Web Development",
       description: "Clear, engaging one-liner + expanded intro about purpose and audience.",
       image: "/fivestar.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
@@ -109,12 +106,11 @@ export default function ProjectsPage() {
     },
     {
       title: "Chiropractic Healthcare",
-      // client: "Your Client Name",
-      category: "Web Development", // changed from 'Web Application'
+      category: "Web Development", 
       description: "A clean, responsive website built to increase patient trust through clear service descriptions, appointment booking, and testimonials.",
       image: "/healthcare.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
-      results: ["📈 30% increase in appointment requests", "⚡️ 40% faster page load times", "📲 50% mobile traffic engagement"],
+      results: ["30% increase in appointment requests", "40% faster page load times", "50% mobile traffic engagement"],
       gradient: "from-purple-500 to-pink-600",
       featured: true,
     },
@@ -468,18 +464,21 @@ export default function ProjectsPage() {
                 </h2>
 
                 <p className="text-2xl text-gray-300 mb-12 leading-relaxed">
-                  🎨 Let's bring your vision to life with cutting-edge technology and award-winning design.
+                   Let's bring your vision to life with cutting-edge technology and award-winning design.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                  <a href="/projects">
                   <Button
                     size="lg"
                     className="btn-gradient text-white px-12 py-6 text-xl font-bold rounded-full hover-lift group"
-                  >
+                    >
                     <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                     Start Your Project
                     <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
                   </Button>
+                    </a>
+                  <a href="/contact">
                   <Button
                     size="lg"
                     variant="outline"
@@ -488,6 +487,7 @@ export default function ProjectsPage() {
                     <Heart className="mr-3 h-6 w-6 group-hover:animate-pulse" />
                     View More Projects
                   </Button>
+                    </a>
                 </div>
               </div>
             </div>

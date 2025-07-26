@@ -240,6 +240,7 @@ export default function Services() {
 
         {/* Bottom CTA */}
         <div className="mt-20 text-center animate-fade-in-up animation-delay-800">
+          <Link href="/services">
           <Button
             size="lg"
             className="btn-gradient text-white px-12 py-6 text-xl font-bold rounded-full hover-lift group"
@@ -248,6 +249,7 @@ export default function Services() {
             Explore All Services
             <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
           </Button>
+          </Link>
         </div>
       </div>
     </section>

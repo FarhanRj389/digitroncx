@@ -4,66 +4,69 @@ import { useState } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github } from "lucide-react"
-
+import Link from "next/link"
 const projects = [
   {
     id: 1,
-    title: "Coolmaster",
-    category: "Web Development",
-    description: "Cool Master® delivers trusted HVAC, refrigeration, and air conditioning services tailored to meet your needs. With a focus on quality, efficiency, and customer satisfaction, we keep your spaces comfortable and running smoothly anytime, anywhere in Auckland.",
-    image: "/coolmaster.co.nz.png",
-    technologies: ["WordPress", "Multiple Contact Forms", "SEO"],
-    // liveUrl: "#",
+    title: "Aisa Halal Meet",
+    category: "E-commerce",
+    description: "Aisa Halal Meet is a modern online halal meat ordering platform that allows users to browse, select, and order a wide range of halal-certified meat products with fast delivery and clear quality assurance.",
+    image: "/Aishahalal meets.png",
+    technologies: ["Next.js", "Tailwind CSS", "TypeScript", "React"],
+    links: "https://aisahalalmeet.netlify.app/",
     // githubUrl: "#",
   },
   {
     id: 2,
-    title: "EaxyLive",
-    category: "Web Development",
-    description: "Cross-platform mobile application for healthcare management and patient care.",
-    image: "/eazylive.png",
-    technologies: ["WIX", "Stripe"],
-    // liveUrl: "#",
-    // githubUrl: "#",
+    title: "Fone Fixer",
+    category: "Web Development", // changed from 'Web Application'
+    links: "https://fone-fixer.netlify.app/",
+    description: "A responsive web app to showcase repair services and allow customers to book appointments and view pricing.",
+    image: "/fonefixer.png",
+    technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+     // githubUrl: "#",
   },
   {
     id: 3,
-    title: "Eracusbpo",
-    category: "Web Application",
-    description: "EracusBPO is a digital agency based in Auckland, NZ, serving businesses across New Zealand and Australia. They specialize in web development, digital marketing, and financial consulting to help companies scale smarter and faster",
-    image: "/eracusbpo.png",
-    technologies: ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
-    // liveUrl: "#",
+    title: "Chiropractic Healthcare",
+      category: "Web Development", // changed from 'Web Application'
+      description: "A clean, responsive website showcasing chiropractic services, appointment booking, and trust-building elements like testimonials and FAQs.",
+      image: "/health.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      // liveUrl: "#",
     // githubUrl: "#",
   },
   {
     id: 4,
-    title: "Link City Industries",
-    category: "Web Development",
-    description: "Link City Industries is a leading provider of industrial and commercial services in Auckland, New Zealand. They offer a wide range of services including industrial cleaning, industrial maintenance, and industrial services.",
-    image: "/linkcityindusteries.png",
-    technologies: ["HTML", "CSS", "JavaScript", "JQuery" , "Bootstrap"],
-    // liveUrl: "#",
+    title: "Garden Landscaping",
+      // client: "Your Client Name",
+      category: "Web Development", // changed from 'Web Application'
+      description: "A clean, responsive website showcasing landscaping services such as design, maintenance, patios, planting, with galleries and contact forms.",
+      image: "/garden.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      // liveUrl: "#",
     // githubUrl: "#",
   },
   {
     id: 5,
-    title: "Yi Sourcing",
-    category: "Web Development",
-    description: "Yi Sourcing is a leading provider of sourcing and procurement services in Auckland, New Zealand. They offer a wide range of services including sourcing, procurement, and supply chain management.",
-    image: "/yisourcing.png",
-    technologies: ["WordPress", "SEO", "Multiple Contact Forms"],
-    // liveUrl: "#",
+    title: "Five Star",
+      // client: "Your Client Name",
+      category: "Web Development", // changed from 'Web Application'
+      description: "Clear, engaging one-liner + expanded intro about purpose and audience.",
+      image: "/fivestar.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      // liveUrl: "#",
     // githubUrl: "#",
   },
   {
     id: 6,
-    title: "Rev1",
-    category: "Mobile Development",
-    description: "Interactive learning platform for students with gamification elements.",
-    image: "/revupdetaling.png",
-    technologies: ["Flutter", "Firebase", "Node.js", "MongoDB"],
-    // liveUrl: "#",
+    title: "Chiropractic Healthcare",
+      // client: "Your Client Name",
+      category: "Web Development", // changed from 'Web Application'
+      description: "A clean, responsive website built to increase patient trust through clear service descriptions, appointment booking, and testimonials.",
+      image: "/healthcare.png",
+      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
+      // liveUrl: "#",
     // githubUrl: "#",
   },
 ]
@@ -121,14 +124,15 @@ export default function Projects() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-4 left-4 right-4 flex gap-2">
+                    <Link href={project.links || "#"}>
                     <Button size="sm" variant="outline" className="bg-white/90 text-gray-900 border-white/90">
                       <ExternalLink className="h-4 w-4 mr-1" />
-                      Live
                     </Button>
-                    <Button size="sm" variant="outline" className="bg-white/90 text-gray-900 border-white/90">
+                    </Link>
+                    {/* <Button size="sm" variant="outline" className="bg-white/90 text-gray-900 border-white/90">
                       <Github className="h-4 w-4 mr-1" />
                       Code
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>
@@ -156,9 +160,12 @@ export default function Projects() {
         </div>
 
         <div className="mt-16 text-center">
+          <Link href="/projects">
+          
           <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4">
             View All Projects
           </Button>
+          </Link>
         </div>
       </div>
     </section>

@@ -74,7 +74,7 @@ export default function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-white hover:text-cyan-400 transition-colors duration-300"
+            className="md:hidden text-white hover:text-cyan-400 transition-colors duration-100"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
@@ -89,7 +89,7 @@ export default function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="block px-4 py-3 text-white hover:text-cyan-400 hover:bg-white/10 rounded-xl transition-all duration-300 font-medium"
+                  className="block px-4 py-3 text-white hover:text-cyan-400 hover:bg-white/10 rounded-xl transition-all duration-100 font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}

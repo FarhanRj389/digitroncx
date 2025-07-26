@@ -64,13 +64,13 @@ export default function AboutPage() {
       icon: Users,
       title: "Client Obsession",
       description:
-        "Your success isn't just our goal—it's our obsession. We go beyond expectations to create digital magic.",
+        "Your success isn't just our goal it's our obsession. We go beyond expectations to create digital magic.",
       gradient: "from-blue-500 to-cyan-500",
     },
     {
       icon: Award,
       title: "Excellence Redefined",
-      description: "We don't just meet standards—we shatter them. Every project is a masterpiece in the making.",
+      description: "We don't just meet standards we shatter them. Every project is a masterpiece in the making.",
       gradient: "from-purple-500 to-pink-500",
     },
     {
@@ -83,7 +83,7 @@ export default function AboutPage() {
     {
       icon: Target,
       title: "Innovation First",
-      description: "We don't follow trends—we create them. Tomorrow's technology, available today.",
+      description: "We don't follow trends we create them. Tomorrow's technology, available today.",
       gradient: "from-orange-500 to-red-500",
     },
   ]
@@ -123,7 +123,7 @@ export default function AboutPage() {
             </h1>
 
             <p className="text-2xl text-gray-300 mb-12 animate-fade-in-up animation-delay-200 leading-relaxed">
-               We're not just a web development agency—we're digital alchemists transforming visions into
+               We're not just a web development agency we're digital alchemists transforming visions into
               <span className="text-cyan-400 font-semibold"> extraordinary digital experiences</span> that captivate,
               inspire, and deliver results across four countries.
             </p>
@@ -225,8 +225,8 @@ export default function AboutPage() {
                 </h3>
 
                 <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  🌟 To revolutionize the digital landscape by crafting extraordinary experiences that don't just meet
-                  expectations—they shatter them. We believe every click, every scroll, every interaction should spark
+                  To revolutionize the digital landscape by crafting extraordinary experiences that don't just meet
+                  expectations they shatter them. We believe every click, every scroll, every interaction should spark
                   joy and drive meaningful results.
                 </p>
 
@@ -271,7 +271,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              🌟 Our passionate team of digital artists, code wizards, and innovation architects work tirelessly to
+               Our passionate team of digital artists, code wizards, and innovation architects work tirelessly to
               bring your wildest digital dreams to life.
             </p>
           </div>
@@ -392,15 +392,16 @@ export default function AboutPage() {
                   🚀 Let's transform your vision into an extraordinary digital reality that captivates, converts, and
                   conquers your market.
                 </p>
-
+                <a href="/contact">
                 <Button
                   size="lg"
                   className="btn-gradient text-white px-12 py-6 text-xl font-bold rounded-full hover-lift group"
-                >
+                  >
                   <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                   Start Your Digital Journey Today
                   <Sparkles className="ml-3 h-6 w-6 group-hover:animate-spin" />
                 </Button>
+                  </a>
               </div>
             </div>
           </div>

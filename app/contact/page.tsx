@@ -193,7 +193,7 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-5xl mx-auto">
             <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-500/20 to-blue-500/20 backdrop-blur-sm border border-white/20 text-white rounded-full text-lg font-medium mb-10 animate-bounce-in glass-effect">
-              <Heart className="h-6 w-6 mr-3 animate-pulse text-pink-400" />💬 Let's Create Something Amazing Together
+              <Heart className="h-6 w-6 mr-3 animate-pulse text-pink-400" /> Let's Create Something Amazing Together
               <Sparkles className="h-6 w-6 ml-3 animate-spin text-yellow-400" />
             </div>
 
@@ -301,7 +301,7 @@ export default function ContactPage() {
             </h2>
 
             <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              🌍 With strategically located offices across four countries, we provide round-the-clock support and local
+               With strategically located offices across four countries, we provide round-the-clock support and local
               expertise wherever you are.
             </p>
           </div>
@@ -421,7 +421,7 @@ export default function ContactPage() {
       {/* CTA Section */}
       <section className="py-32 relative z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="max-w-4xl mx-auto animate-on-scroll">
+          <div className="max-w-5xl mx-auto animate-on-scroll">
             <div className="bg-gradient-to-br from-green-500/10 to-blue-600/10 backdrop-blur-lg rounded-3xl p-16 border border-white/20 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 rounded-3xl"></div>
 
@@ -437,15 +437,20 @@ export default function ContactPage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                  <a href="/contact">
                   <button className="btn-gradient text-white px-12 py-6 text-xl font-bold rounded-full hover-lift group transition-all duration-300">
                     <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                     Get Free Consultation
                     <Sparkles className="ml-3 h-6 w-6 group-hover:animate-spin" />
                   </button>
+                  </a>
+                  
+                  <a href="/contact">
                   <button className="glass-effect text-white border-white/30 px-12 py-6 text-xl font-bold rounded-full hover-glow group border-2 transition-all duration-300">
                     <Calendar className="mr-3 h-6 w-6 group-hover:animate-pulse" />
                     Schedule Meeting
                   </button>
+                  </a>
                 </div>
               </div>
             </div>

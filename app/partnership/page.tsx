@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
+import { uploadToCloudinary } from "@/lib/cloudinary"
 import {
   Users,
   FileText,
@@ -33,7 +34,7 @@ import {
   Trash2,
 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
-import { supabase } from '@/lib/supabase';
+import { submitPartnershipForm } from "@/lib/firebase-db"
 
 // Mock partner data with your specified credentials
 const mockPartners = [
@@ -425,28 +426,44 @@ export default function PartnershipPage() {
     })
   }
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
     if (files) {
-      const newFiles = Array.from(files).map((file, index) => ({
-        id: Date.now() + index,
-        name: file.name,
-        size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
-        type:
-          file.type.includes("sheet") || file.name.includes(".xlsx") || file.name.includes(".xls")
-            ? "spreadsheet"
-            : file.type.includes("document") || file.name.includes(".docx") || file.name.includes(".doc")
-              ? "document"
-              : "file",
-        date: new Date().toISOString().split("T")[0],
-        file: file,
-      }))
+      try {
+        const newFiles = []
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i]
+          // Upload to Cloudinary
+          const cloudinaryUrl = await uploadToCloudinary(file)
+          
+          newFiles.push({
+            id: Date.now() + i,
+            name: file.name,
+            size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+            type:
+              file.type.includes("sheet") || file.name.includes(".xlsx") || file.name.includes(".xls")
+                ? "spreadsheet"
+                : file.type.includes("document") || file.name.includes(".docx") || file.name.includes(".doc")
+                  ? "document"
+                  : "file",
+            date: new Date().toISOString().split("T")[0],
+            url: cloudinaryUrl, // Store Cloudinary URL instead of file object
+          })
+        }
 
-      setUploadedFiles([...uploadedFiles, ...newFiles])
-      toast({
-        title: "📁 Files Uploaded Successfully!",
-        description: `${newFiles.length} file(s) uploaded and ready to use.`,
-      })
+        setUploadedFiles([...uploadedFiles, ...newFiles])
+        toast({
+          title: "📁 Files Uploaded Successfully!",
+          description: `${newFiles.length} file(s) uploaded to Cloudinary and ready to use.`,
+        })
+      } catch (error) {
+        console.error('Error uploading files:', error)
+        toast({
+          title: "❌ Upload Error",
+          description: "Failed to upload files. Please try again.",
+          variant: 'destructive'
+        })
+      }
     }
   }
 
@@ -572,56 +589,55 @@ export default function PartnershipPage() {
   }
 
   const handlePartnershipFormSubmit = async () => {
-    // Prepare data for Supabase
-    const data = {
-      firstName: partnershipFormData.personalInfo.firstName,
-      lastName: partnershipFormData.personalInfo.lastName,
-      email: partnershipFormData.personalInfo.email,
-      phone: partnershipFormData.personalInfo.phone,
-      position: partnershipFormData.personalInfo.position,
-      experience: partnershipFormData.personalInfo.experience,
-      companyName: partnershipFormData.businessInfo.companyName,
-      website: partnershipFormData.businessInfo.website,
-      industry: partnershipFormData.businessInfo.industry,
-      companySize: partnershipFormData.businessInfo.companySize,
-      location: partnershipFormData.businessInfo.location,
-      registrationNumber: partnershipFormData.businessInfo.registrationNumber,
-      partnershipType: partnershipFormData.partnershipInfo.partnershipType,
-      expectedVolume: partnershipFormData.partnershipInfo.expectedVolume,
-      targetMarkets: Array.isArray(partnershipFormData.partnershipInfo.targetMarkets) ? partnershipFormData.partnershipInfo.targetMarkets.join(',') : partnershipFormData.partnershipInfo.targetMarkets,
-      experienceDetails: partnershipFormData.partnershipInfo.experience,
-      motivation: partnershipFormData.partnershipInfo.motivation,
-      servicesOffered: Array.isArray(partnershipFormData.servicesOffered) ? partnershipFormData.servicesOffered.join(',') : partnershipFormData.servicesOffered,
-      status: 'Pending Review',
-      submittedDate: new Date().toISOString().split('T')[0],
-      lastUpdated: new Date().toISOString().split('T')[0],
-    };
+    try {
+      // Prepare data for Firebase
+      const data = {
+        firstName: partnershipFormData.personalInfo.firstName,
+        lastName: partnershipFormData.personalInfo.lastName,
+        email: partnershipFormData.personalInfo.email,
+        phone: partnershipFormData.personalInfo.phone,
+        position: partnershipFormData.personalInfo.position,
+        experience: partnershipFormData.personalInfo.experience,
+        companyName: partnershipFormData.businessInfo.companyName,
+        website: partnershipFormData.businessInfo.website,
+        industry: partnershipFormData.businessInfo.industry,
+        companySize: partnershipFormData.businessInfo.companySize,
+        location: partnershipFormData.businessInfo.location,
+        registrationNumber: partnershipFormData.businessInfo.registrationNumber,
+        partnershipType: partnershipFormData.partnershipInfo.partnershipType,
+        expectedVolume: partnershipFormData.partnershipInfo.expectedVolume,
+        targetMarkets: Array.isArray(partnershipFormData.partnershipInfo.targetMarkets) ? partnershipFormData.partnershipInfo.targetMarkets.join(',') : partnershipFormData.partnershipInfo.targetMarkets,
+        experienceDetails: partnershipFormData.partnershipInfo.experience,
+        motivation: partnershipFormData.partnershipInfo.motivation,
+        servicesOffered: Array.isArray(partnershipFormData.servicesOffered) ? partnershipFormData.servicesOffered.join(',') : partnershipFormData.servicesOffered,
+        files: uploadedFiles.map(f => f.url).filter(Boolean), // Include Cloudinary URLs
+        status: 'Pending Review',
+        submittedDate: new Date().toISOString().split('T')[0],
+        lastUpdated: new Date().toISOString().split('T')[0],
+      };
 
-    const { error } = await supabase
-      .from('partnership_applications')
-      .insert([data]);
+      await submitPartnershipForm(data);
 
-    if (error) {
+      setShowPartnershipForm(false);
+      setCurrentPartnershipStep(1);
+      setPartnershipFormData({
+        personalInfo: { firstName: '', lastName: '', email: '', phone: '', position: '', experience: '' },
+        businessInfo: { companyName: '', website: '', industry: '', companySize: '', location: '', registrationNumber: '' },
+        partnershipInfo: { partnershipType: '', expectedVolume: '', targetMarkets: [], experience: '', motivation: '' },
+        servicesOffered: [],
+      });
+      toast({
+        title: '🎉 Partnership Application Submitted!',
+        description: "Thank you for your interest! We'll review your application and get back to you within 48 hours.",
+      });
+    } catch (error) {
+      console.error('Error submitting partnership form:', error);
       toast({
         title: '❌ Submission Failed',
         description: 'There was an error submitting your application. Please try again.',
         variant: 'destructive',
       });
-      return;
     }
-
-    setShowPartnershipForm(false);
-    setCurrentPartnershipStep(1);
-    setPartnershipFormData({
-      personalInfo: { firstName: '', lastName: '', email: '', phone: '', position: '', experience: '' },
-      businessInfo: { companyName: '', website: '', industry: '', companySize: '', location: '', registrationNumber: '' },
-      partnershipInfo: { partnershipType: '', expectedVolume: '', targetMarkets: [], experience: '', motivation: '' },
-      servicesOffered: [],
-    });
-    toast({
-      title: '🎉 Partnership Application Submitted!',
-      description: "Thank you for your interest! We'll review your application and get back to you within 48 hours.",
-    });
   };
 
   const handleUpdateApplication = (applicationId, updatedData) => {

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { Mail, Phone, MapPin, Clock } from "lucide-react"
+import { submitContactForm } from "@/lib/firebase-db"
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -27,17 +28,24 @@ export default function Contact() {
     contactMethod: "",
   })
   const [currentStep, setCurrentStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    
     try {
+      // Submit to Firebase
+      await submitContactForm(formData)
+      
+      // Send email notification (optional - you can keep the existing email functionality)
       const res = await fetch('/api/send-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       })
-      const data = await res.json()
+      
       if (res.ok) {
         toast({
           title: 'Message Sent!',
@@ -63,16 +71,19 @@ export default function Contact() {
       } else {
         toast({
           title: 'Error',
-          description: data.error || 'Failed to send message.',
+          description: 'Failed to send email notification.',
           variant: 'destructive',
         })
       }
     } catch (err) {
+      console.error('Error submitting form:', err)
       toast({
         title: 'Error',
-        description: 'Failed to send message.',
+        description: 'Failed to send message. Please try again.',
         variant: 'destructive',
       })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -461,8 +472,8 @@ export default function Contact() {
                   Next →
                 </Button>
               ) : (
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
-                  Send Message
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </Button>
               )}
             </div>

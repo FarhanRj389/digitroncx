@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { ChevronLeft, ChevronRight, Upload, Gift, Sparkles, Rocket, Star, Zap, Crown, Diamond } from "lucide-react"
-import { uploadFileToSupabase } from "@/lib/supabase-upload"
-import { supabase } from "@/lib/supabase"
+import { uploadToCloudinary } from "@/lib/cloudinary"
+import { submitDemoForm } from "@/lib/firebase-db"
 import FloatingParticles from "@/components/FloatingParticles"
 
 export default function DemoPage() {
@@ -34,6 +34,7 @@ export default function DemoPage() {
 
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([])
   const [error, setError] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState({
     name: '',
     email: '',
@@ -66,60 +67,67 @@ export default function DemoPage() {
 
   const handleSubmit = async () => {
     if (!validateStep()) return;
+    setIsSubmitting(true)
 
-    const dataToSend = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      company: formData.company,
-      website_type: formData.websiteType,
-      industry: formData.industry,
-      pages: formData.pages,
-      features: formData.features,
-      socialmedia: formData.socialmedia,
-      domain: formData.domain,
-      timeline: formData.timeline,
-      files: uploadedFiles,
-    };
+    try {
+      const dataToSend = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        website_type: formData.websiteType,
+        industry: formData.industry,
+        pages: formData.pages,
+        features: formData.features,
+        socialmedia: formData.socialmedia,
+        domain: formData.domain,
+        timeline: formData.timeline,
+        files: uploadedFiles,
+      };
 
-    // 1. Save to Supabase
-    const { data, error } = await supabase.from("demo_forms").insert([dataToSend]);
-    if (error) {
-      toast({ title: "Error", description: error.message });
-      return;
+      // 1. Save to Firebase
+      await submitDemoForm(dataToSend);
+
+      // 2. Send email
+      await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataToSend),
+      });
+
+      toast({
+        title: "🎉 Application Submitted Successfully!",
+        description: "We'll create your stunning demo website and contact you within 48 hours with something amazing!",
+      });
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        websiteType: "",
+        industry: "",
+        pages: "",
+        goal: "",
+        features: [],
+        domain: "",
+        socialmedia: "",
+        timeline: "",
+        files: [],
+      });
+      setUploadedFiles([]);
+      setCurrentStep(1);
+    } catch (error) {
+      console.error('Error submitting demo form:', error);
+      toast({ 
+        title: "Error", 
+        description: "Failed to submit application. Please try again.",
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSubmitting(false)
     }
-
-    // 2. Send email
-    await fetch('/api/send-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dataToSend),
-    });
-
-    toast({
-      title: "🎉 Application Submitted Successfully!",
-      description: "We'll create your stunning demo website and contact you within 48 hours with something amazing!",
-    });
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      websiteType: "",
-      industry: "",
-      pages: "",
-      goal: "",
-      features: [],
-   
-      socialmedia: "",
-      domain: "",
-      timeline: "",
-      files: [],
-    });
-    setUploadedFiles([]);
-    setCurrentStep(1);
   };
 
   const handleInputChange = (field: string, value: any) => {
@@ -133,8 +141,17 @@ export default function DemoPage() {
   const handleFilesUpload = async (files: File[]) => {
     const urls: string[] = [];
     for (let i = 0; i < files.length; i++) {
-      const url = await uploadFileToSupabase(files[i]);
-      urls.push(url);
+      try {
+        const url = await uploadToCloudinary(files[i]);
+        urls.push(url);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        toast({
+          title: "Upload Error",
+          description: `Failed to upload ${files[i].name}`,
+          variant: 'destructive'
+        });
+      }
     }
     setUploadedFiles(prev => [...prev, ...urls]);
   };
@@ -698,10 +715,20 @@ export default function DemoPage() {
                     <Button
                       onClick={handleSubmit}
                       className="bg-gradient-to-r from-green-500 via-blue-500 to-purple-600 hover:from-green-600 hover:via-blue-600 hover:to-purple-700 text-white px-12 py-4 text-xl font-bold rounded-xl hover-lift animate-pulse-glow"
+                      disabled={isSubmitting}
                     >
-                      <Gift className="h-6 w-6 mr-3" />
-                      Get My FREE Website!
-                      <Sparkles className="h-6 w-6 ml-3 animate-spin" />
+                      {isSubmitting ? (
+                        <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                      ) : (
+                        <>
+                          <Gift className="h-6 w-6 mr-3" />
+                          Get My FREE Website!
+                          <Sparkles className="h-6 w-6 ml-3 animate-spin" />
+                        </>
+                      )}
                     </Button>
                   )}
                 </div>

@@ -36,10 +36,17 @@ export default function Contact() {
     setIsSubmitting(true)
     
     try {
-      // Submit to Firebase
-      await submitContactForm(formData)
+      // Try to submit to Firebase first (optional)
+      let firebaseSuccess = false
+      try {
+        await submitContactForm(formData)
+        firebaseSuccess = true
+      } catch (firebaseError) {
+        console.warn('Firebase submission failed, continuing with email only:', firebaseError)
+        // Continue with email submission even if Firebase fails
+      }
       
-      // Send email notification (optional - you can keep the existing email functionality)
+      // Send email notification
       const res = await fetch('/api/send-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,9 +55,13 @@ export default function Contact() {
       
       if (res.ok) {
         toast({
-          title: 'Message Sent!',
-          description: "We'll get back to you within 24 hours.",
+          title: 'Message Sent Successfully!',
+          description: firebaseSuccess 
+            ? "Your message has been saved and we'll get back to you within 24 hours."
+            : "Your message has been sent and we'll get back to you within 24 hours.",
         })
+        
+        // Reset form
         setFormData({
           name: "",
           email: "",
@@ -69,17 +80,43 @@ export default function Contact() {
         })
         setCurrentStep(1)
       } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to send email notification.',
-          variant: 'destructive',
-        })
+        // If email fails but Firebase succeeded, still show success
+        if (firebaseSuccess) {
+          toast({
+            title: 'Message Partially Sent',
+            description: "Your message has been saved but email notification failed. We'll still get back to you.",
+          })
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            service: "",
+            message: "",
+            company: "",
+            budget: "",
+            timeline: "",
+            priority: "",
+            platforms: [],
+            features: [],
+            technicalRequirements: "",
+            source: "",
+            contactMethod: "",
+          })
+          setCurrentStep(1)
+        } else {
+          // Both failed
+          toast({
+            title: 'Error',
+            description: 'Failed to send message. Please try again or contact us directly.',
+            variant: 'destructive',
+          })
+        }
       }
     } catch (err) {
       console.error('Error submitting form:', err)
       toast({
         title: 'Error',
-        description: 'Failed to send message. Please try again.',
+        description: 'Failed to send message. Please try again or contact us directly.',
         variant: 'destructive',
       })
     } finally {

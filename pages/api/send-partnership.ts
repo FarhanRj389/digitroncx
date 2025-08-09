@@ -8,7 +8,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const {
-      name, email, phone, service, message, company, budget, timeline, priority, platforms, features, technicalRequirements, source, contactMethod
+      name, email, phone, company, partnership_type, industry, 
+      experience, resources, goals, timeline, message
     } = req.body;
 
     // Validate required fields
@@ -22,19 +23,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    // Note: Data is already saved to Firebase in the component
-    // This API is only for sending email notifications
-
     // Check if email configuration is available
     if (!process.env.CONTACT_MAIL_HOST || !process.env.CONTACT_MAIL_USER || !process.env.CONTACT_MAIL_PASS) {
       console.warn('Email configuration missing, skipping email notification');
       return res.status(200).json({ 
         success: true, 
-        message: 'Form submitted successfully (email notification skipped due to missing configuration)' 
+        message: 'Partnership form submitted successfully (email notification skipped due to missing configuration)' 
       });
     }
 
-    const transporter = nodemailer.createTransport({
+    const transporter = nodemailer.createTransporter({
       host: process.env.CONTACT_MAIL_HOST,
       port: Number(process.env.CONTACT_MAIL_PORT) || 587,
       secure: (process.env.CONTACT_MAIL_PORT === '465'),
@@ -47,22 +45,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const mailOptions = {
       from: process.env.CONTACT_MAIL_USER,
       to: 'info@digitroncx.com',
-      subject: 'New Project Query Form Submission',
+      subject: 'New Partnership Form Submission',
       html: `
-        <h2>Contact Form Submission</h2>
+        <h2>Partnership Form Submission</h2>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Phone:</b> ${phone || 'Not provided'}</p>
         <p><b>Company:</b> ${company || 'Not provided'}</p>
-        <p><b>Service:</b> ${service || 'Not specified'}</p>
-        <p><b>Budget:</b> ${budget || 'Not specified'}</p>
+        <p><b>Partnership Type:</b> ${partnership_type || 'Not specified'}</p>
+        <p><b>Industry:</b> ${industry || 'Not specified'}</p>
+        <p><b>Experience:</b> ${experience || 'Not specified'}</p>
+        <p><b>Resources:</b> ${resources || 'Not specified'}</p>
+        <p><b>Goals:</b> ${goals || 'Not specified'}</p>
         <p><b>Timeline:</b> ${timeline || 'Not specified'}</p>
-        <p><b>Priority:</b> ${priority || 'Not specified'}</p>
-        <p><b>Platforms:</b> ${platforms && platforms.length ? platforms.join(', ') : 'None'}</p>
-        <p><b>Features:</b> ${features && features.length ? features.join(', ') : 'None'}</p>
-        <p><b>Technical Requirements:</b> ${technicalRequirements || 'None'}</p>
-        <p><b>Source:</b> ${source || 'Not specified'}</p>
-        <p><b>Preferred Contact Method:</b> ${contactMethod || 'Not specified'}</p>
         <p><b>Message:</b> ${message}</p>
         <br>
         <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
@@ -73,18 +68,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     res.status(200).json({ 
       success: true, 
-      message: 'Email notification sent successfully' 
+      message: 'Partnership form submitted successfully' 
     });
   } catch (error) {
-    console.error('Error in send-contact API:', error);
+    console.error('Error in send-partnership API:', error);
     
     // Return a more specific error message
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     
     res.status(500).json({ 
-      error: 'Failed to process contact form submission',
+      error: 'Failed to process partnership form submission',
       details: errorMessage,
       timestamp: new Date().toISOString()
     });
   }
-} 
+}

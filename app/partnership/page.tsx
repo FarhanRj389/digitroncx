@@ -593,7 +593,7 @@ export default function PartnershipPage() {
       // Prepare data for Firebase
       const data = {
         firstName: partnershipFormData.personalInfo.firstName,
-        lastName: partnershipFormData.personalInfo.lastName,
+        lastName: partnershipFormData.personalInfo.firstName,
         email: partnershipFormData.personalInfo.email,
         phone: partnershipFormData.personalInfo.phone,
         position: partnershipFormData.personalInfo.position,
@@ -616,31 +616,87 @@ export default function PartnershipPage() {
         lastUpdated: new Date().toISOString().split('T')[0],
       };
 
-      await submitPartnershipForm(data);
+      // Try to submit to Firebase first
+      let firebaseSuccess = false
+      try {
+        await submitPartnershipForm(data);
+        firebaseSuccess = true
+      } catch (firebaseError) {
+        console.warn('Firebase submission failed, continuing with email only:', firebaseError)
+        // Continue with email submission even if Firebase fails
+      }
 
-      setShowPartnershipForm(false);
-      setCurrentPartnershipStep(1);
-      setPartnershipFormData({
-        personalInfo: { firstName: '', lastName: '', email: '', phone: '', position: '', experience: '' },
-        businessInfo: { companyName: '', website: '', industry: '', companySize: '', location: '', registrationNumber: '' },
-        partnershipInfo: { partnershipType: '', expectedVolume: '', targetMarkets: [], experience: '', motivation: '' },
-        servicesOffered: [],
+      // Send email notification
+      const emailData = {
+        name: `${partnershipFormData.personalInfo.firstName} ${partnershipFormData.personalInfo.lastName}`,
+        email: partnershipFormData.personalInfo.email,
+        phone: partnershipFormData.personalInfo.phone,
+        company: partnershipFormData.businessInfo.companyName,
+        partnership_type: partnershipFormData.partnershipInfo.partnershipType,
+        industry: partnershipFormData.businessInfo.industry,
+        experience: partnershipFormData.partnershipInfo.experience,
+        resources: partnershipFormData.partnershipInfo.expectedVolume,
+        goals: partnershipFormData.partnershipInfo.motivation,
+        timeline: partnershipFormData.partnershipInfo.expectedVolume,
+        message: `Partnership Application: ${partnershipFormData.partnershipInfo.motivation}`
+      };
+
+      const res = await fetch('/api/send-partnership', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(emailData),
       });
-      toast({
-        title: '🎉 Partnership Application Submitted!',
-        description: "Thank you for your interest! We'll review your application and get back to you within 48 hours.",
-      });
+
+      if (res.ok) {
+        setShowPartnershipForm(false);
+        setCurrentPartnershipStep(1);
+        setPartnershipFormData({
+          personalInfo: { firstName: '', lastName: '', email: '', phone: '', position: '', experience: '' },
+          businessInfo: { companyName: '', website: '', industry: '', companySize: '', location: '', registrationNumber: '' },
+          partnershipInfo: { partnershipType: '', expectedVolume: '', targetMarkets: [], experience: '', motivation: '' },
+          servicesOffered: [],
+        });
+        toast({
+          title: '🎉 Partnership Application Submitted!',
+          description: firebaseSuccess 
+            ? "Thank you for your interest! We'll review your application and get back to you within 48 hours."
+            : "Thank you for your interest! We'll review your application and get back to you within 48 hours.",
+        });
+      } else {
+        // If email fails but Firebase succeeded, still show success
+        if (firebaseSuccess) {
+          setShowPartnershipForm(false);
+          setCurrentPartnershipStep(1);
+          setPartnershipFormData({
+            personalInfo: { firstName: '', lastName: '', email: '', phone: '', position: '', experience: '' },
+            businessInfo: { companyName: '', website: '', industry: '', companySize: '', location: '', registrationNumber: '' },
+            partnershipInfo: { partnershipType: '', expectedVolume: '', targetMarkets: [], experience: '', motivation: '' },
+            servicesOffered: [],
+          });
+          toast({
+            title: '🎉 Partnership Application Submitted!',
+            description: "Your application has been saved but email notification failed. We'll still review it and get back to you.",
+          });
+        } else {
+          // Both failed
+          toast({
+            title: '❌ Submission Failed',
+            description: 'There was an error submitting your application. Please try again or contact us directly.',
+            variant: 'destructive',
+          });
+        }
+      }
     } catch (error) {
       console.error('Error submitting partnership form:', error);
       toast({
         title: '❌ Submission Failed',
-        description: 'There was an error submitting your application. Please try again.',
+        description: 'There was an error submitting your application. Please try again or contact us directly.',
         variant: 'destructive',
       });
     }
   };
 
-  const handleUpdateApplication = (applicationId, updatedData) => {
+  const handleUpdateApplication = (applicationId: number, updatedData: any) => {
     setPartnershipApplications(
       partnershipApplications.map((app) =>
         app.id === applicationId
@@ -655,7 +711,7 @@ export default function PartnershipPage() {
     })
   }
 
-  const handleDeleteApplication = (applicationId) => {
+  const handleDeleteApplication = (applicationId: number) => {
     setPartnershipApplications(partnershipApplications.filter((app) => app.id !== applicationId))
     toast({
       title: "🗑️ Application Deleted",
@@ -663,7 +719,7 @@ export default function PartnershipPage() {
     })
   }
 
-  const handleUpdateLead = (leadId, updatedData) => {
+  const handleUpdateLead = (leadId: number, updatedData: any) => {
     setLeads(leads.map((lead) => (lead.id === leadId ? { ...lead, ...updatedData } : lead)))
     setEditingLead(null)
     toast({
@@ -672,7 +728,7 @@ export default function PartnershipPage() {
     })
   }
 
-  const handleDeleteLead = (leadId) => {
+  const handleDeleteLead = (leadId: number) => {
     setLeads(leads.filter((lead) => lead.id !== leadId))
     toast({
       title: "🗑️ Lead Deleted Successfully!",

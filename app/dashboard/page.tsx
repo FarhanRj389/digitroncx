@@ -1,13 +1,19 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Menu, X, Eye, Edit, Trash2, Download, ExternalLink } from "lucide-react";
-import { getContacts, getDemoForms, getPartnershipApplications, updateDocumentStatus, deleteDocument } from "@/lib/firebase-db";
-
-const ADMIN_USERNAME = "admin@digitroncx.com";
-const ADMIN_PASSWORD = "digitroncx123!";
+import { Menu, X, Eye, Edit, Trash2, Download, ExternalLink, LogOut } from "lucide-react";
+import { 
+  getContacts, 
+  getDemoForms, 
+  getPartnershipApplications, 
+  deleteDocument,
+  signInAdmin,
+  signOutAdmin,
+  getCurrentUser,
+  onAuthChange
+} from "@/lib/firebase-db";
 
 const SECTIONS = [
   { key: "contacts", label: "Contact" },
@@ -15,15 +21,9 @@ const SECTIONS = [
   { key: "partnership_applications", label: "Partnership Application" },
 ];
 
-const STATUS_OPTIONS = {
-  contacts: ['new', 'in_progress', 'completed', 'archived'],
-  demo_forms: ['pending', 'in_review', 'approved', 'rejected', 'completed'],
-  partnership_applications: ['pending_review', 'under_review', 'approved', 'rejected', 'partnership_formed']
-};
-
 export default function DashboardPage() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [activeSection, setActiveSection] = useState(SECTIONS[0].key);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -31,19 +31,62 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Check authentication state on component mount
+  useEffect(() => {
+    const unsubscribe = onAuthChange((user) => {
+      if (user) {
+        console.log('User authenticated:', user.email);
+        setLoggedIn(true);
+        setCurrentUser(user);
+        setError("");
+        // Fetch data for the current section
+        fetchSectionData(activeSection);
+      } else {
+        console.log('User not authenticated');
+        setLoggedIn(false);
+        setCurrentUser(null);
+        setData([]);
+        setError("");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      loginData.username === ADMIN_USERNAME &&
-      loginData.password === ADMIN_PASSWORD
-    ) {
-      setLoggedIn(true);
+    setLoading(true);
+    setError("");
+    
+    try {
+      const result = await signInAdmin(loginData.email, loginData.password);
+      if (result.success) {
+        console.log('Login successful');
+        setLoggedIn(true);
+        setCurrentUser(result.user);
+        setError("");
+        // Data will be fetched automatically by the useEffect
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Login failed';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOutAdmin();
+      setLoggedIn(false);
+      setCurrentUser(null);
+      setData([]);
       setError("");
-      fetchSectionData(activeSection);
-    } else {
-      setError("Invalid username or password");
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
 
@@ -53,7 +96,8 @@ export default function DashboardPage() {
     setData([]);
     
     try {
-      let result;
+      console.log(`Fetching data for section: ${section}`);
+      let result: any[] = [];
       switch (section) {
         case "contacts":
           result = await getContacts();
@@ -67,10 +111,12 @@ export default function DashboardPage() {
         default:
           result = [];
       }
+      console.log(`Data received for ${section}:`, result);
       setData(result || []);
     } catch (error) {
       console.error('Error fetching data:', error);
-      setError(error instanceof Error ? error.message : 'Failed to fetch data');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch data';
+      setError(`Error fetching ${section} data: ${errorMessage}`);
       setData([]);
     } finally {
       setLoading(false);
@@ -81,19 +127,6 @@ export default function DashboardPage() {
     setActiveSection(section);
     setSidebarOpen(false);
     fetchSectionData(section);
-  };
-
-  const handleStatusUpdate = async (itemId: string, newStatus: string) => {
-    setUpdatingStatus(itemId);
-    try {
-      await updateDocumentStatus(activeSection, itemId, newStatus);
-      // Refresh data
-      await fetchSectionData(activeSection);
-      setUpdatingStatus(null);
-    } catch (error) {
-      console.error('Error updating status:', error);
-      setUpdatingStatus(null);
-    }
   };
 
   const handleDelete = async (itemId: string) => {
@@ -154,9 +187,10 @@ export default function DashboardPage() {
           <h2 className="text-2xl font-bold mb-6 text-white">Admin Login</h2>
           <div className="mb-4">
             <Input
-              placeholder="Username"
-              value={loginData.username}
-              onChange={e => setLoginData(prev => ({ ...prev, username: e.target.value }))}
+              placeholder="Email"
+              type="email"
+              value={loginData.email}
+              onChange={e => setLoginData(prev => ({ ...prev, email: e.target.value }))}
               className="mb-2"
               required
             />
@@ -169,7 +203,17 @@ export default function DashboardPage() {
             />
           </div>
           {error && <div className="text-red-500 mb-4">{error}</div>}
-          <Button type="submit" className="w-full bg-blue-600 text-white">Login</Button>
+          <Button 
+            type="submit" 
+            className="w-full bg-blue-600 text-white"
+            disabled={loading}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </Button>
+          <div className="mt-4 text-center text-sm text-gray-300">
+            <p>Use your Firebase admin account credentials</p>
+            <p className="mt-2 text-xs">Make sure you have admin access to the project</p>
+          </div>
         </form>
       </div>
     );
@@ -219,6 +263,14 @@ export default function DashboardPage() {
         {/* Title for desktop */}
         <h3 className="text-xl font-bold text-white mb-4 hidden md:block">Dashboard</h3>
         
+        {/* User Info */}
+        {currentUser && (
+          <div className="bg-white/10 rounded-lg p-3 mb-4">
+            <div className="text-sm text-gray-300 mb-1">Logged in as:</div>
+            <div className="text-white font-medium text-sm truncate">{currentUser.email}</div>
+          </div>
+        )}
+        
         {SECTIONS.map(section => (
           <Button
             key={section.key}
@@ -228,35 +280,68 @@ export default function DashboardPage() {
             {section.label}
           </Button>
         ))}
+        
+        {/* Logout Button */}
+        {currentUser && (
+          <Button
+            onClick={handleLogout}
+            className="w-full text-left bg-red-600 text-white hover:bg-red-700 mt-auto"
+          >
+            <LogOut className="h-4 w-4 mr-2" /> Log Out
+          </Button>
+        )}
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-2 sm:p-4 md:p-8 overflow-x-auto md:ml-64 w-full">
+      <main className="flex-1 p-2 sm:p-4 md:p-8 overflow-x-auto w-full">
         <div className="flex items-center justify-between mb-6 mt-4 md:mt-0">
           <h2 className="text-2xl font-bold text-white">
             {SECTIONS.find(s => s.key === activeSection)?.label} Data
           </h2>
-          <Button 
-            onClick={() => fetchSectionData(activeSection)}
-            className="bg-blue-600 hover:bg-blue-700"
-          >
-            Refresh
-          </Button>
         </div>
         
         {loading && <div className="text-white">Loading...</div>}
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {error && (
+          <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 mb-4">
+            <div className="text-red-400 font-semibold mb-2">⚠️ Error</div>
+            <div className="text-red-300">{error}</div>
+            {error.includes('Firebase connection failed') && (
+              <div className="mt-3 text-sm text-red-200">
+                💡 <strong>Quick Fix:</strong> Check your <code className="bg-red-900/50 px-2 py-1 rounded">.env.local</code> file and ensure all Firebase variables are set correctly. See <code className="bg-red-900/50 px-2 py-1 rounded">ENVIRONMENT_SETUP.md</code> for detailed instructions.
+              </div>
+            )}
+            {error.includes('permission') || error.includes('permissions') && (
+              <div className="mt-3 text-sm text-red-200">
+                🔐 <strong>Authentication Issue:</strong> You need to create an admin user in Firebase Authentication. See <code className="bg-red-900/50 px-2 py-1 rounded">ADMIN_USER_SETUP.md</code> for step-by-step instructions.
+              </div>
+            )}
+            {error.includes('Authentication failed') && (
+              <div className="mt-3 text-sm text-red-200">
+                🔑 <strong>Login Failed:</strong> Check your email/password or create an admin user in Firebase Console → Authentication → Users. See <code className="bg-red-900/50 px-2 py-1 rounded">ADMIN_USER_SETUP.md</code> for help.
+              </div>
+            )}
+          </div>
+        )}
         
         {!loading && !error && (
           <div className="overflow-x-auto">
             {data.length === 0 ? (
-              <div className="text-gray-300">No data found.</div>
+              <div className="text-center py-12">
+                <div className="text-gray-300 text-lg mb-4">
+                  <p className="text-sm">No {SECTIONS.find(s => s.key === activeSection)?.label.toLowerCase()} data found in the database.</p>
+                  <p className="text-sm text-gray-400 mt-2">This could mean:</p>
+                  <ul className="text-sm text-gray-400 mt-1 text-left max-w-md mx-auto">
+                    <li>• No forms have been submitted yet</li>
+                    <li>• Forms are being saved to a different collection</li>
+                    <li>• There's an issue with the form submission</li>
+                  </ul>
+                </div>
+              </div>
             ) : (
               <table className="min-w-full bg-white/10 text-white rounded-xl text-xs sm:text-sm md:text-base">
                 <thead>
                   <tr>
                     <th className="p-2 sm:p-3 text-left border-b border-white/20">Actions</th>
-                    <th className="p-2 sm:p-3 text-left border-b border-white/20">Status</th>
                     <th className="p-2 sm:p-3 text-left border-b border-white/20">Created</th>
                     {Object.keys(data[0])
                       .filter(key => !['id', 'status', 'createdAt', 'updatedAt', 'type'].includes(key))
@@ -281,18 +366,6 @@ export default function DashboardPage() {
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <select
-                            value={row.status || 'pending'}
-                            onChange={(e) => handleStatusUpdate(row.id, e.target.value)}
-                            className="bg-slate-700 text-white text-xs px-2 py-1 rounded border border-white/20"
-                            disabled={updatingStatus === row.id}
-                          >
-                            {STATUS_OPTIONS[activeSection as keyof typeof STATUS_OPTIONS]?.map(status => (
-                              <option key={status} value={status}>
-                                {status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </option>
-                            ))}
-                          </select>
                           <Button
                             size="sm"
                             variant="outline"
@@ -302,16 +375,6 @@ export default function DashboardPage() {
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
-                      </td>
-                      <td className="p-2 sm:p-3">
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          row.status === 'completed' || row.status === 'approved' ? 'bg-green-600' :
-                          row.status === 'rejected' ? 'bg-red-600' :
-                          row.status === 'in_progress' || row.status === 'in_review' ? 'bg-yellow-600' :
-                          'bg-gray-600'
-                        }`}>
-                          {row.status || 'pending'}
-                        </span>
                       </td>
                       <td className="p-2 sm:p-3">
                         {formatValue('createdAt', row.createdAt)}

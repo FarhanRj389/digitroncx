@@ -61,15 +61,19 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
+            <Link href="/contact">
             <Button
               variant="outline"
               className="bg-white/10 text-white border-white/30 hover:bg-white/20 hover:border-white/50 backdrop-blur-sm font-semibold"
-            >
+              >
               Get Quote
             </Button>
+              </Link>
+            <Link href="/demo">
             <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-6 py-2 rounded-full hover-lift">
               Start Project
             </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}

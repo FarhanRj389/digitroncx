@@ -20,7 +20,7 @@ const projects = [
     id: 2,
     title: "Fone Fixer",
     category: "Web Development", // changed from 'Web Application'
-    links: "https://fone-fixer.netlify.app/",
+    links: "https://fonefixer.co.nz/",
     description: "A responsive web app to showcase repair services and allow customers to book appointments and view pricing.",
     image: "/fonefixer.png",
     technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
@@ -30,6 +30,7 @@ const projects = [
     id: 3,
     title: "Chiropractic Healthcare",
       category: "Web Development", // changed from 'Web Application'
+      links: "https://chiropractic-healthcare.netlify.app/",
       description: "A clean, responsive website showcasing chiropractic services, appointment booking, and trust-building elements like testimonials and FAQs.",
       image: "/health.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
@@ -41,34 +42,26 @@ const projects = [
     title: "Garden Landscaping",
       // client: "Your Client Name",
       category: "Web Development", // changed from 'Web Application'
+      links: "https://gardenlandscaping.netlify.app/",
       description: "A clean, responsive website showcasing landscaping services such as design, maintenance, patios, planting, with galleries and contact forms.",
       image: "/garden.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
       // liveUrl: "#",
-    // githubUrl: "#",
-  },
-  {
-    id: 5,
-    title: "Five Star",
+      // githubUrl: "#",
+    },
+    {
+      id: 5,
+      title: "Five Star",
       // client: "Your Client Name",
       category: "Web Development", // changed from 'Web Application'
+      links: "https://fivestarrental.netlify.app/",
       description: "Clear, engaging one-liner + expanded intro about purpose and audience.",
       image: "/fivestar.png",
       technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
       // liveUrl: "#",
     // githubUrl: "#",
   },
-  {
-    id: 6,
-    title: "Chiropractic Healthcare",
-      // client: "Your Client Name",
-      category: "Web Development", // changed from 'Web Application'
-      description: "A clean, responsive website built to increase patient trust through clear service descriptions, appointment booking, and testimonials.",
-      image: "/healthcare.png",
-      technologies: ["Next.js", "Tailwind CSS", "React", "TypeScript"],
-      // liveUrl: "#",
-    // githubUrl: "#",
-  },
+  
 ]
 
 const categories = ["All", "Web Development", "Mobile Development", "Web Application", "Branding"]

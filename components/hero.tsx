@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Play, Sparkles, Zap, Globe2, Rocket } from "lucide-react"
 import FloatingParticles from "@/components/FloatingParticles"
+import Link from "next/link"
 
 export default function Hero() {
   const globeRef = useRef<HTMLDivElement>(null)
@@ -78,14 +79,16 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start animate-fade-in-up animation-delay-400 mb-12">
+              <Link href="/demo">
               <Button
                 size="lg"
                 className="btn-gradient text-white px-10 py-6 text-lg font-semibold rounded-full hover-lift group"
-              >
+                >
                 <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                 Get Your Free Demo
                 <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
+                </Link>
               <Button
                 size="lg"
                 variant="outline"

@@ -219,7 +219,7 @@ export default function Services() {
                   </Link>
                 )}
                 {service.btn && (
-                  <Link href="/contact" className="z-10">
+                  <Link href="/partnership" className="z-10">
                     <Button
                       className={` ${service.btn} hover:scale-105`} >
                       Apply Now

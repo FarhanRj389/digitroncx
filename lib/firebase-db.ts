@@ -4,14 +4,51 @@ import {
   addDoc, 
   getDocs, 
   doc, 
-  updateDoc, 
   deleteDoc, 
   query, 
   orderBy, 
   limit,
   serverTimestamp 
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  User 
+} from 'firebase/auth';
+import { db, auth } from './firebase';
+
+// Authentication functions
+export async function signInAdmin(email: string, password: string) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return { success: true, user: userCredential.user };
+  } catch (error) {
+    console.error('Authentication error:', error);
+    if (error instanceof Error) {
+      throw new Error(`Authentication failed: ${error.message}`);
+    }
+    throw new Error('Authentication failed: Unknown error');
+  }
+}
+
+export async function signOutAdmin() {
+  try {
+    await signOut(auth);
+    return { success: true };
+  } catch (error) {
+    console.error('Sign out error:', error);
+    throw error;
+  }
+}
+
+export function getCurrentUser(): User | null {
+  return auth.currentUser;
+}
+
+export function onAuthChange(callback: (user: User | null) => void) {
+  return onAuthStateChanged(auth, callback);
+}
 
 // Contact form submission
 export async function submitContactForm(data: any) {
@@ -66,63 +103,66 @@ export async function submitPartnershipForm(data: any) {
 // Get all contacts
 export async function getContacts() {
   try {
+    console.log('Attempting to fetch contacts from Firebase...');
     const q = query(collection(db, 'contacts'), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
+    const contacts = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate?.() || doc.data().createdAt || 'N/A'
     }));
+    console.log(`Successfully fetched ${contacts.length} contacts`);
+    return contacts;
   } catch (error) {
     console.error('Error getting contacts:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch contacts: ${error.message}`);
+    }
+    throw new Error('Failed to fetch contacts: Unknown error');
   }
 }
 
 // Get all demo forms
 export async function getDemoForms() {
   try {
+    console.log('Attempting to fetch demo forms from Firebase...');
     const q = query(collection(db, 'demo_forms'), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
+    const demoForms = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate?.() || doc.data().createdAt || 'N/A'
     }));
+    console.log(`Successfully fetched ${demoForms.length} demo forms`);
+    return demoForms;
   } catch (error) {
     console.error('Error getting demo forms:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch demo forms: ${error.message}`);
+    }
+    throw new Error('Failed to fetch demo forms: Unknown error');
   }
 }
 
 // Get all partnership applications
 export async function getPartnershipApplications() {
   try {
+    console.log('Attempting to fetch partnership applications from Firebase...');
     const q = query(collection(db, 'partnership_applications'), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
+    const partnershipApps = querySnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt?.toDate?.() || doc.data().createdAt || 'N/A'
     }));
+    console.log(`Successfully fetched ${partnershipApps.length} partnership applications`);
+    return partnershipApps;
   } catch (error) {
     console.error('Error getting partnership applications:', error);
-    throw error;
-  }
-}
-
-// Update document status
-export async function updateDocumentStatus(collectionName: string, docId: string, status: string) {
-  try {
-    const docRef = doc(db, collectionName, docId);
-    await updateDoc(docRef, {
-      status,
-      updatedAt: serverTimestamp()
-    });
-    return { success: true };
-  } catch (error) {
-    console.error('Error updating document:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch partnership applications: ${error.message}`);
+    }
+    throw new Error('Failed to fetch partnership applications: Unknown error');
   }
 }
 
